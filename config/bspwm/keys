@@ -21,7 +21,7 @@ super + Return
 
 # program launcher
 super + d
-	rofi -show drun
+	rofi -show drun -theme ~/.config/bspwm/rofi.rasi
 
 # make sxhkd reload its configuration files:
 super + Escape

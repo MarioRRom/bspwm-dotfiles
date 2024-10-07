@@ -23,7 +23,7 @@ follow = mouse
 width = (200, 444)
 height = 300
 origin = top-center
-offset = 0x60
+offset = 0x57
 scale = 0
 notification_limit = 0
 
@@ -53,11 +53,11 @@ sort = yes
 
 ## Text Settings ##
 
-font = JetBrainsMono Nerd Font Medium 30
+font = JetBrainsMono Nerd Font Medium 20
 
 line_height = 0
 markup = full
-format = "<span size='x-large' font_desc='Cantarell 12' weight='bold' foreground='#f9f9f9'>%s</span>\n%b"
+format = "<span size='x-large' font_desc='Cantarell 19' weight='bold' foreground='#f9f9f9'>%s</span>\n%b"
 alignment = center
 vertical_alignment = center
 show_age_threshold = 60

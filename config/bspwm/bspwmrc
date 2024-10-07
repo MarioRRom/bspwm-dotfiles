@@ -40,7 +40,7 @@ bspc config borderless_monocle   true
 bspc config gapless_monocle      true
 
 ## Mouse Configuration
-#bspc config focus_follows_pointer true
+bspc config focus_follows_pointer true
 bspc config pointer_modifier mod4
 bspc config pointer_action1 move
 bspc config pointer_action2 resize_side
@@ -48,6 +48,7 @@ bspc config pointer_action3 resize_corner
 xsetroot -cursor_name left_ptr &
 
 ## Windows Rules
+bspc rule -a steam state=floating
 bspc rule -a Gimp desktop='^8' state=floating follow=on
 bspc rule -a Chromium desktop='^2'
 bspc rule -a mplayer2 state=floating

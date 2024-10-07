@@ -39,7 +39,7 @@ window {
     border-color:                   #89dceb;
     width:                          406px;
     x-offset:                       12px;
-    y-offset:                       60px;
+    y-offset:                       57px;
 }
 
 prompt {

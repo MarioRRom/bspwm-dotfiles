@@ -56,3 +56,11 @@ super + d
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
+
+# Volume control
+XF86Audio{RaiseVolume,LowerVolume,Mute}
+	amixer set Master{ 5%+, 5%-, toggle}
+
+# Music Control
+XF86Audio{Next,Prev,Play,Stop}
+	playerctl{ next, previous, play-pause, stop}

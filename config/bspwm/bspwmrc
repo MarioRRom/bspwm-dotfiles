@@ -50,7 +50,7 @@ bspc rule -a burp-StartBurp: state=floating
 
 ## Process on Startup
 
-processes=("picom" "polybar" "sxhkd" "dunst" "komorebi")
+processes=("picom" "polybar" "sxhkd" "dunst" "nitrogen")
 
 for process in "${processes[@]}"; do
   if pidof -q "$process"; then
@@ -72,7 +72,8 @@ else
     polybar --reload -c ~/.config/bspwm/polybar/top_bar.ini &
 fi
 
-komorebi &
+# Set Wallpaper
+nitrogen --restore &
 
 dunst -config ~/.config/bspwm/notifications &
 

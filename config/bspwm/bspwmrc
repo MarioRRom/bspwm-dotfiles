@@ -19,8 +19,15 @@
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 ## Workspaces
-bspc monitor VGA-0 -d I II III IV V
-bspc monitor HDMI-0 -d I
+workspaces() {
+    name=1
+    for monitor in $(bspc query -M); do
+        bspc monitor "${monitor}" -n "$name" -d '1' '2' '3' '4' '5' '6'
+        ((name++))
+    done
+}
+
+workspaces
 
 ## Decorations
 bspc config border_width         2

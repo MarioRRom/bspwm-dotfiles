@@ -1,4 +1,16 @@
 #!/bin/sh
+#===========================================================================
+#
+#
+#███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+#████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+#██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+#██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+#██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+#╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+#                          MarioRRom's Dotfiles
+#
+#===========================================================================
 
 # Colores de Polybar
 TEXT="%{F#f9e2af}"
@@ -6,10 +18,12 @@ SURFACE="%{F#313244}"
 SURFACEB="%{B#313244}"
 RESET="%{B-}"
 
-updates=$(checkupdates 2> /dev/null | wc -l)
+pacman_updates=$(checkupdates 2> /dev/null | wc -l)
+paru_updates=$(paru -Qua 2> /dev/null | wc -l)
+total_updates=$((pacman_updates + paru_updates))
 
-if [ "$updates" -gt 0 ]; then
-    echo "${SURFACE}${TEXT}${SURFACEB}󰏔 $updates!${SURFACE}${RESET} "
+if [ "$total_updates" -gt 0 ]; then
+    echo "${SURFACE}${TEXT}${SURFACEB}󰏔 $total_updates!${SURFACE}${RESET} "
 else
     echo ""
 fi

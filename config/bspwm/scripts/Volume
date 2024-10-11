@@ -1,0 +1,97 @@
+#!/bin/bash
+#===========================================================================
+#
+#
+#███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+#████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+#██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+#██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+#██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+#╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+#                          MarioRRom's Dotfiles
+#
+#===========================================================================
+
+# Iconos y colores
+iDIR="$HOME/.config/bspwm/assets"
+notify_cmd='dunstify -u low -h string:x-dunst-stack-tag:obvolume'
+
+# Obtener el volumen
+get_volume() {
+    pactl get-sink-volume @DEFAULT_SINK@ | grep -oP "\d+%" | head -1 | tr -d '%'
+}
+
+# Generar barra de volumen
+get_volume_bar() {
+    volume=$(get_volume)
+    filled=$((volume / 10))
+    empty=$((10 - filled))
+
+    bar=""
+    for i in $(seq 1 $filled); do
+        bar="${bar}━"
+    done
+    for i in $(seq 1 $empty); do
+        bar="${bar}─"
+    done
+
+    echo "$bar"
+}
+
+# Icono
+get_icon() {
+    current=$(get_volume)
+    if pactl get-sink-mute @DEFAULT_SINK@ | grep -qE 'yes|sí'; then
+        icon="$iDIR/volume-muted.svg"
+    elif [ "$current" -eq 0 ]; then
+        icon="$iDIR/volume-muted.svg"
+    else
+        icon="$iDIR/volume.svg"
+    fi
+}
+
+# Notificar al usuario
+notify_user() {
+    get_icon
+    ${notify_cmd} -i "$icon" "$(get_volume_bar)"
+}
+
+# Aumentar el volumen
+inc_volume() {
+    pactl set-sink-mute @DEFAULT_SINK@ 0
+    current_volume=$(get_volume)
+    if [ "$current_volume" -lt 100 ]; then
+        pactl set-sink-volume @DEFAULT_SINK@ +5% && notify_user
+    else
+        notify_user
+    fi
+}
+
+# Disminuir el volumen
+dec_volume() {
+    pactl set-sink-mute @DEFAULT_SINK@ 0
+    pactl set-sink-volume @DEFAULT_SINK@ -5% && notify_user
+}
+
+# Silenciar
+toggle_mute() {
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+    notify_user
+}
+
+# Ejecutar
+if [ -x $(which pactl) ]; then
+    if [[ "$1" == "--get" ]]; then
+        get_volume
+    elif [[ "$1" == "--aum" ]]; then
+        inc_volume
+    elif [[ "$1" == "--baj" ]]; then
+        dec_volume
+    elif [[ "$1" == "--muteo" ]]; then
+        toggle_mute
+    else
+        echo "$(get_volume_bar)"
+    fi
+else
+    ${notify_cmd} "'pactl' no está instalado."
+fi

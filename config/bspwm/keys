@@ -59,7 +59,7 @@ super + Escape
 
 # Volume control
 XF86Audio{RaiseVolume,LowerVolume,Mute}
-	amixer set Master{ 5%+, 5%-, toggle}
+	Volume{ --aum, --baj, --muteo}
 
 # Music Control
 XF86Audio{Next,Prev,Play,Stop}

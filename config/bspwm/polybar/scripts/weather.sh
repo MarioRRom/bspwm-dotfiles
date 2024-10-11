@@ -1,7 +1,19 @@
 #!/bin/sh
+#===========================================================================
+#
+#
+#███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+#████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+#██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+#██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+#██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+#╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+#                          MarioRRom's Dotfiles
+#
+#===========================================================================
 
-API_KEY="TU_CLAVE_API" # Puedes crear una clave API en el sitio de OpenWeather
-CITY_ID="TU_ID_DE_CIUDAD" # Puedes encontrar el ID de tu ciudad en el sitio de OpenWeather
+API_KEY="b412dae84b266e46cbc31c1d476f03a7" # Puedes crear una clave API en el sitio de OpenWeather
+CITY_ID="3841956" # Puedes encontrar el ID de tu ciudad en el sitio de OpenWeather
 UNITS="metric"  # Usa "imperial" para Fahrenheit
 
 WEATHER=$(curl -sf "http://api.openweathermap.org/data/2.5/weather?id=$CITY_ID&units=$UNITS&appid=$API_KEY")

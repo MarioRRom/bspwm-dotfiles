@@ -50,8 +50,12 @@ super + Return
 	alacritty
 
 # program launcher
-super + d
+super + r
 	rofi -show drun -theme ~/.config/bspwm/rofi.rasi
+
+# Explorador de Archivos
+super + e
+	thunar
 
 # make sxhkd reload its configuration files:
 super + Escape

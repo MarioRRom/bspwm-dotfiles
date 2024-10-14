@@ -17,13 +17,18 @@ TEXT="%{F#f9e2af}"
 SURFACE="%{F#313244}"
 SURFACEB="%{B#313244}"
 RESET="%{B-}"
+#definir archivo temporal
+TEMP_FILE="/tmp/updates_count"
 
-pacman_updates=$(checkupdates 2> /dev/null | wc -l)
-paru_updates=$(paru -Qua 2> /dev/null | wc -l)
-total_updates=$((pacman_updates + paru_updates))
+# Verificar si el archivo existe y no está vacio
+if [ -s "$TEMP_FILE" ]; then
+    updates=$(cat "$TEMP_FILE")
 
-if [ "$total_updates" -gt 0 ]; then
-    echo "${SURFACE}${TEXT}${SURFACEB}󰏔 $total_updates!${SURFACE}${RESET} "
+    # Si las actualizaciones son mayores a 0, se enseña el modulo.
+    if [ "$updates" -gt 0 ]; then
+        echo "${SURFACE}${TEXT}${SURFACEB}󰏔 $updates!${SURFACE}${RESET} "
+    fi
 else
+    # Si no hay actualizaciones, no enseñar el modulo.
     echo ""
 fi

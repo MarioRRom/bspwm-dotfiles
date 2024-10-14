@@ -93,3 +93,8 @@ dunst -config ~/.config/bspwm/notifications &
 #Xresources
 xrdb merge "$HOME"/.Xresources &
 
+# Buscar Actualizaciones
+while true;do
+    ~/.config/bspwm/scripts/Updates
+    sleep 300 # esperar 5 minutos antes de ejecutar nuevamente
+done &

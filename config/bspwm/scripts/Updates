@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #===========================================================================
 #
 #
@@ -12,10 +12,16 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
-is_muted=$(pactl get-source-mute @DEFAULT_SOURCE@ | grep -qE 'yes|sí')
+TEMP_FILE="/tmp/updates_count"
 
-if [ $? -eq 0 ]; then
-    echo "%{F#f9e2af}󰍭"
-else
-    echo "%{F#f38ba8}󰍬"
-fi
+# Funcion para obtener el número de actualizaciones.
+get_updates() {
+    local pacman_updates=$(checkupdates 2> /dev/null | wc -l)
+    local paru_updates=$(paru -Qua 2> /dev/null | wc -l)
+    local total_updates=$((pacman_updates + paru_updates))
+
+    # Guardar el número total de actualizaciones en el archivo temporal
+    echo "$total_updates" > "$TEMP_FILE"
+}
+
+get_updates

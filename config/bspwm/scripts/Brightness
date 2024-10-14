@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #===========================================================================
 #
 #
@@ -12,18 +12,72 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
-# Colores de Polybar
-TEXT="%{F#f9e2af}"
-SURFACE="%{F#313244}"
-SURFACEB="%{B#313244}"
-RESET="%{B-}"
+# Iconos y colores
+iDIR="$HOME/.config/bspwm/assets"
+notify_cmd='dunstify -u low -h string:x-dunst-stack-tag:obbrightness'
+icon="$iDIR/brightness.svg"
 
-pacman_updates=$(checkupdates 2> /dev/null | wc -l)
-paru_updates=$(paru -Qua 2> /dev/null | wc -l)
-total_updates=$((pacman_updates + paru_updates))
+# Obtener el brillo actual
+get_brightness() {
+    brightnessctl get
+}
 
-if [ "$total_updates" -gt 0 ]; then
-    echo "${SURFACE}${TEXT}${SURFACEB}󰏔 $total_updates!${SURFACE}${RESET} "
+# Obtener el brillo máximo
+get_max_brightness() {
+    brightnessctl max
+}
+
+# Calcular porcentaje de brillo
+get_brightness_percentage() {
+    current=$(get_brightness)
+    max=$(get_max_brightness)
+    echo $((current * 100 / max))
+}
+
+# Generar barra de brillo
+get_brightness_bar() {
+    brightness=$(get_brightness_percentage)
+    filled=$((brightness / 10))
+    empty=$((10 - filled))
+
+    bar=""
+    for i in $(seq 1 $filled); do
+        bar="${bar}━"
+    done
+    for i in $(seq 1 $empty); do
+        bar="${bar}─"
+    done
+
+    echo "$bar"
+}
+
+
+# Notificar al usuario
+notify_user() {
+    ${notify_cmd} -i "$icon" "$(get_brightness_bar)"
+}
+
+# Aumentar el brillo
+inc_brightness() {
+    brightnessctl set +10% && notify_user
+}
+
+# Disminuir el brillo
+dec_brightness() {
+    brightnessctl set 10%- && notify_user
+}
+
+# Ejecutar
+if [ -x $(which brightnessctl) ]; then
+    if [[ "$1" == "--get" ]]; then
+        get_brightness_percentage
+    elif [[ "$1" == "--aum" ]]; then
+        inc_brightness
+    elif [[ "$1" == "--baj" ]]; then
+        dec_brightness
+    else
+        echo "$(get_brightness_bar)"
+    fi
 else
-    echo ""
+    ${notify_cmd} "'brightnessctl' no está instalado."
 fi

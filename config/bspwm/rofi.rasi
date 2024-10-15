@@ -14,7 +14,7 @@
 configuration {
     font:           				"JetBrainsMono Nerd Font Medium 10";
     show-icons:                     true;
-	icon-theme: 					"WhiteSur-dark";
+	icon-theme: 					"Papirus-Dark";
     display-drun: 					"";
     drun-display-format:            "{icon} {name}";
     disable-history:                false;

@@ -12,8 +12,10 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
-
-## Scripts
+## Establecer vaiables de Entorno
+export XDG_CURRENT_DESKTOP='bspwm'
+export QT_QPA_PLATFORMTHEME=qt5ct  # Para QT5
+export QT_QPA_PLATFORMTHEME=qt6ct  # Para QT6
 PATH="$HOME/.config/bspwm/scripts:$PATH"
 
 ## Fix java applications
@@ -50,7 +52,6 @@ bspc config pointer_action3 resize_corner
 xsetroot -cursor_name left_ptr &
 
 ## Windows Rules
-bspc rule -a steam state=floating
 bspc rule -a Gimp desktop='^8' state=floating follow=on
 bspc rule -a Chromium desktop='^2'
 bspc rule -a mplayer2 state=floating
@@ -60,7 +61,7 @@ bspc rule -a burp-StartBurp: state=floating
 
 ## Process on Startup
 
-processes=("picom" "polybar" "sxhkd" "dunst" "nitrogen")
+processes=("picom" "polybar" "sxhkd" "dunst" "nitrogen" "xsettingsd")
 
 for process in "${processes[@]}"; do
   if pidof -q "$process"; then
@@ -92,6 +93,9 @@ dunst -config ~/.config/bspwm/notifications &
 
 #Xresources
 xrdb merge "$HOME"/.Xresources &
+
+#Xsettingsd
+xsettingsd --config="${HOME}"/.config/bspwm/xsettingsd &
 
 # Buscar Actualizaciones
 while true;do

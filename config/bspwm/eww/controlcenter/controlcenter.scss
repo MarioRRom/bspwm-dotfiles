@@ -1,0 +1,213 @@
+//===========================================================================
+//
+//
+//███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+//████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+//██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+//██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+//██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//                          MarioRRom's Dotfiles
+//                 https://github.com/MarioRRom/bspwm-dotfiles
+//===========================================================================
+$sliderswith: 280px;
+
+
+.controlcenter {
+    background-color: $mantle;
+    margin: 10px;
+}
+
+.ccpanelbtn {
+    background-color: $base;
+    border-radius: 50px;
+    border: inset 1px $base;
+
+    .ccicon {
+        font-size: 20px;
+        color: $text;
+        text-shadow: 1px 1px 2px $overlay0;
+        padding-bottom: 3px;
+        background: none;
+        border: none;
+        margin: 10px 10px 10px 10px;
+    }
+
+    .cctext {
+        color: $text;
+        font-size: 14px;
+        text-shadow: 1px 1px 2px $overlay0;
+    }
+
+    &:hover {
+        background: linear-gradient(0deg, $base, $surface0);
+        transition: 1.5s;
+    }
+
+    &:active {
+        background: linear-gradient(0deg, $base, $mauve);
+        transition: 1.5s;
+    }
+}
+
+.ccpanelbtnon {
+    background: linear-gradient( 0deg, #cba6f7, #f5c2e7);
+    border-radius: 50px;
+
+    .ccicon {
+        font-size: 20px;
+        color: $surface0;
+        text-shadow: 1px 1px 2px $overlay0;
+        padding-bottom: 3px;
+        background: none;
+        border: none;
+        margin: 10px 10px 10px 10px;
+    }
+
+    .cctext {
+        color: $surface0;
+        font-size: 14px;
+        text-shadow: 1px 1px 2px $overlay0;
+    }
+
+    &:hover {
+        background: $pink;
+    }
+}
+
+.ccpanelsqbtn {
+    background-color: $base;
+    border-radius: 50px;
+    border: inset 1px $base;
+
+    .ccicon {
+        font-size: 40px;
+        color: $text;
+        text-shadow: 1px 1px 2px $overlay0;
+        padding-bottom: 3px;
+        background: none;
+        border: none;
+        margin: 6px 6px 6px 0px;
+    }
+
+    .cctext {
+        color: $text;
+        font-size: 15px;
+        text-shadow: 1px 1px 2px $overlay0;
+    }
+
+    &:hover {
+        background: linear-gradient(0deg, $base, $surface0);
+    }
+
+    &:active {
+        background: linear-gradient(0deg, $base, $mauve);
+        transition: 1.5s;
+    }
+}
+
+.ccpanelsqbtnon {
+    background: linear-gradient( 0deg, $mauve, $pink);
+    border-radius: 30px;
+
+    .ccicon {
+        font-size: 40px;
+        color: $surface0;
+        text-shadow: 1px 1px 2px $overlay0;
+        padding-bottom: 3px;
+        background: none;
+        border: none;
+        margin: 6px 6px 6px 0px;
+    }
+
+    .cctext {
+        color: $surface0;
+        font-size: 15px;
+        text-shadow: 1px 1px 2px $overlay0;
+    }
+
+    &:hover {
+        background: $sky;
+    }
+}
+
+.volumeslider {
+    border-radius: 20px;
+    margin-top: 10px;
+
+    .volumeicon {
+        font-family: "Material Icons";
+        font-size: 20px;
+        color: $green;
+    }
+
+    scale {
+        trough {
+            background: $overlay0;
+            min-height: 19px;
+            min-width: $sliderswith;
+            border-radius: 20px;
+            border: 2px solid $surface0;
+        }
+
+        highlight {
+            background: linear-gradient(to right, $green, $teal);
+            border-radius: inherit;
+            min-width: 20px;
+        }
+    }
+}
+
+.microslider {
+    border-radius: 20px;
+
+    .microicon {
+        font-family: "Material Icons";
+        font-size: 20px;
+        color: $red;
+        margin: 0px 4px 0px 4px;
+    }
+
+    scale {
+        trough {
+            background: $overlay0;
+            min-height: 19px;
+            min-width: $sliderswith;
+            border-radius: 20px;
+            border: 2px solid $surface0;
+        }
+
+        highlight {
+            background: linear-gradient(to right, $red, $maroon);
+            border-radius: inherit;
+            min-width: 20px;
+        }
+    }
+}
+
+.brightslider {
+    border-radius: 20px;
+
+    .brighticon {
+        font-family: "Material Icons";
+        font-size: 20px;
+        margin: 0px 7px 0px 1px;
+        color: $peach;
+    }
+
+    scale {
+        trough {
+            background: $overlay0;
+            min-height: 19px;
+            min-width: $sliderswith;
+            border-radius: 20px;
+            border: 2px solid $surface0;
+        }
+
+        highlight {
+            background: linear-gradient(to right, $peach, $yellow);
+            border-radius: inherit;
+            min-width: 20px;
+        }
+    }
+}

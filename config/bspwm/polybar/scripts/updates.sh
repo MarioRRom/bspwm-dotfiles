@@ -18,7 +18,7 @@ SURFACE="%{F#313244}"
 SURFACEB="%{B#313244}"
 RESET="%{B-}"
 #definir archivo temporal
-TEMP_FILE="/tmp/updates_count"
+TEMP_FILE="${HOME}/.cache/updates_count"
 
 # Verificar si el archivo existe y no está vacio
 if [ -s "$TEMP_FILE" ]; then

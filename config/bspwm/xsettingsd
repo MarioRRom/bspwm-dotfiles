@@ -17,7 +17,7 @@ Net/IconThemeName "Papirus-Dark"
 Gtk/CursorThemeName "capitaine-cursors-light"
 Gtk/DecorationLayout ":"
 Net/EnableEventSounds 1
-Xft/FontName "JetBrainsMono Nerd Font 9"
+Xft/FontName "Sofia Pro 11"
 Xft/Hinting 1
 Xft/HintStyle "hintslight"
 Xft/Antialias 1

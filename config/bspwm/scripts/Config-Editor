@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #===========================================================================
 #
 #
@@ -12,14 +12,53 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
-# Directorio temporal donde se guardan los datos del clima
-TEMP_DIR="${HOME}/.cache/weather"
+## Este Script es para Gestionar la configuracion el entorno ##
+##    A traves de variables para una facil configuracion     ##
 
-# Leer los valores de los archivos
-ICON=$(cat "$TEMP_DIR/icono" 2>/dev/null || echo "?")
-TEMP=$(cat "$TEMP_DIR/temp" 2>/dev/null || echo "N/A")
-COLOR=$(cat "$TEMP_DIR/color" 2>/dev/null || echo "#FFFFFF")
+BSPDIR="$HOME/.config/bspwm"
+CONFIG_FILE="$BSPDIR/configvars.cfg"
 
-# Mostrar el icono y la temperatura
-# Usamos printf para aplicar el color al icono
-echo " "%{F$COLOR}"$ICON $TEMP"
+# Función para leer el valor de una variable en el archivo de configuración
+leer_variable() {
+    clave=$1
+    valor=$(grep "^${clave}=" "$CONFIG_FILE" | cut -d '=' -f2 | tr -d '"')
+    echo "$valor"
+}
+
+# Función para modificar el valor de una variable en el archivo de configuración
+modificar_variable() {
+    clave=$1
+    nuevo_valor=$2
+
+    # Si la clave existe, reemplazarla
+    if grep -q "^${clave}=" "$CONFIG_FILE"; then
+        sed -i "s/^${clave}=.*/${clave}=${nuevo_valor}/" "$CONFIG_FILE"
+    else
+        # Si la clave no existe, agregarla al archivo
+        echo "${clave}=${nuevo_valor}" >> "$CONFIG_FILE"
+    fi
+}
+
+# Parsear argumentos de línea de comandos
+if [[ $1 == "--leer" ]]; then
+    clave=$2
+    if [[ -z "$clave" ]]; then
+        echo "Error: Debe proporcionar una variable para leer."
+        exit 1
+    fi
+    leer_variable "$clave"
+
+elif [[ $1 == "--editar" ]]; then
+    clave=$2
+    nuevo_valor=$3
+    if [[ -z "$clave" || -z "$nuevo_valor" ]]; then
+        echo "Error: Debe proporcionar una variable y un nuevo valor para editar."
+        exit 1
+    fi
+    modificar_variable "$clave" "$nuevo_valor"
+    echo "$nuevo_valor"
+
+else
+    echo "Uso: $0 --leer <variable> | --editar <variable> <nuevo_valor>"
+    exit 1
+fi

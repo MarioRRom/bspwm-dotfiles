@@ -1,0 +1,179 @@
+;;===========================================================================
+;;
+;;
+;;███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+;;████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+;;██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+;;██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+;;██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+;;╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+;;                          MarioRRom's Dotfiles
+;;                 https://github.com/MarioRRom/bspwm-dotfiles
+;;===========================================================================
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |     Variables      | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+;; Profile Card
+(defpoll USERNAME :interval "5s" "whoami")
+(defpoll OSNAME :interval "5s" "grep '^PRETTY_NAME' /etc/os-release | cut -d '=' -f2")
+(defpoll UPTIME :interval "5s" "uptime -p")
+(defvar profileimg "profile.png")
+
+;; Graficos
+(defpoll CPUPER :interval "1s" "top -bn1 | grep 'Cpu(s)' | awk '{print $2 + $4}'")
+(defpoll RAMPER :interval "30s" "free | awk '/Mem/ {printf \"%.0f\", $3/$2 * 100.0}'")
+(defpoll DISKPER :interval "30s" "df -h / | grep '/' | awk '{print $5}' | sed 's/%//g'")
+(defpoll AVG_TEMP :interval "30s" "sensors | grep '°C' | awk '{print \$3}' | sed 's/[^0-9.]//g' | awk '{sum+=\$1} END {if (NR > 0) printf \"%.0f\", sum/NR; else print 0}'")
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |    Widget Base     | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+(defwidget systeminfo []
+    (box
+        :valign "start"
+        :space-evenly true
+        :spacing 12
+        :orientation "v"
+        (box
+            :orientation "h"
+            :space-evenly false
+            :class "profilecard"
+            (image :class "profilepng" :path profileimg :style "border-radius: 60px" :image-width 80 :image-height 80)
+            (box
+                :class "profiletext"
+                :orientation "v"
+                :halign "center"
+                :valign "center"
+                :spacing 2
+                
+                :space-evenly false         
+                (label :class "name" :text USERNAME)
+                (label :text "welcome to ${OSNAME}")
+                (label :text UPTIME)
+            )
+        )
+
+        ;; Par de Graficos Superior
+        (box
+            :orientation "h"
+            :space-evenly true
+
+            ;Grafico de CPU
+            (box
+                :class "circulargraph"
+                :space-evenly true
+                :halign "center"
+                :hexpand true
+                :orientation "h"
+                (overlay
+                    (circular-progress
+                        :class "cpubar"
+                        :value {EWW_CPU.avg}
+                        :thickness 50
+                        :start-at 75
+                    )
+                    (label :class "cputext" :text "CPU:" :halign "start" :valign "start")
+                    (label :class "cpuicon" :text "")
+                    (label :class "cputext" :text "${CPUPER}%" :halign "end" :valign "end")
+                )
+            )
+
+            ;; Grafico de RAM
+            (box
+                :class "circulargraph"
+                :space-evenly true
+                :halign "center"
+                :hexpand true
+                :orientation "h"
+                (overlay
+                    (circular-progress
+                        :class "rambar"
+                        :value {EWW_RAM.used_mem_perc}
+                        :thickness 50
+                        :start-at 75
+                    )
+                    (label :class "ramtext" :text "RAM:" :halign "start" :valign "start")
+                    (label :class "ramicon" :text "")
+                    (label :class "ramtext" :text "${RAMPER}%" :halign "end" :valign "end")
+                )
+                
+            )
+        )
+
+        ;; Par de Graficos Inferior
+        (box
+            :orientation "h"
+
+            ;Grafico de Disco
+            (box
+                :class "circulargraph"
+                :space-evenly true
+                :halign "center"
+                :hexpand true
+                :orientation "h"
+                (overlay
+                    (circular-progress
+                        :class "diskbar"
+                        :value {EWW_DISK["/"].used_perc}
+                        :thickness 50
+                        :start-at 75
+                    )
+                    (label :class "disktext" :text "DISK:" :halign "start" :valign "start")
+                    (label :class "diskicon" :text "󰋊")
+                    (label :class "disktext" :text "${DISKPER}%" :halign "end" :valign "end")
+                )
+            )
+
+            ;; Temperatura del Sistema
+            (box
+                :class "circulargraph"
+                :space-evenly true
+                :halign "center"
+                :hexpand true
+                :orientation "h"
+                (overlay
+                    (circular-progress
+                        :class "tempbar"
+                        :value AVG_TEMP
+                        :thickness 50
+                        :start-at 75
+                    )
+                    (label :class "temptext" :text "TEMP:" :halign "start" :valign "start")
+                    (label :class "tempicon" :text "")
+                    (label :class "temptext" :text "${AVG_TEMP}°C" :halign "end" :valign "end")
+                )
+            )
+        ) 
+    )
+    
+)
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |      Ventana       | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+(defwindow systeminfo
+    :stacking "bg"
+    :windowtype "dock"
+    :wm-ignore true
+    :geometry (geometry
+        :x "10"
+        :y "58px"
+        :anchor "top left"
+        :width "300px"
+        :height "200px"
+    )
+    (systeminfo)
+)

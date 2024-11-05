@@ -12,14 +12,26 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
-## Establecer vaiables de Entorno
+
+#  .-------------------------.
+#  | .---------------------. |
+#  | | Variables de Entono | |
+#  | `---------------------' |
+#  `-------------------------'
+
 export XDG_CURRENT_DESKTOP='bspwm'
-PATH="$HOME/.config/bspwm/scripts:$PATH"
-
-## Fix java applications
 export _JAVA_AWT_WM_NONREPARENTING=1
+export LC_TIME="en_US.UTF-8"
+BSPDIR="$HOME/.config/bspwm"
+PATH="$BSPDIR/scripts:$PATH"
 
-## Workspaces
+
+#  .-------------------------.
+#  | .---------------------. |
+#  | |     Workspaces      | |
+#  | `---------------------' |
+#  `-------------------------'
+
 workspaces() {
     name=1
     for monitor in $(bspc query -M); do
@@ -30,7 +42,13 @@ workspaces() {
 
 workspaces
 
-## Decorations
+
+#  .-------------------------.
+#  | .---------------------. |
+#  | |    Decoraciones     | |
+#  | `---------------------' |
+#  `-------------------------'
+
 bspc config border_width         2
 bspc config active_border_color "#45475a"
 bspc config focused_border_color "#89dceb"
@@ -41,7 +59,13 @@ bspc config single_monocle true
 bspc config borderless_monocle false
 bspc config gapless_monocle false
 
-## Mouse Configuration
+
+#  .-------------------------.
+#  | .---------------------. |
+#  | |Configuarion de Mouse| |
+#  | `---------------------' |
+#  `-------------------------'
+
 bspc config focus_follows_pointer true
 bspc config pointer_modifier mod4
 bspc config pointer_action1 move
@@ -49,7 +73,13 @@ bspc config pointer_action2 resize_side
 bspc config pointer_action3 resize_corner
 xsetroot -cursor_name left_ptr &
 
-## Windows Rules
+
+#  .-------------------------.
+#  | .---------------------. |
+#  | | Reglas de Ventanas  | |
+#  | `---------------------' |
+#  `-------------------------'
+
 bspc rule -a Gimp desktop='^8' state=floating follow=on
 bspc rule -a Chromium desktop='^2'
 bspc rule -a mplayer2 state=floating
@@ -57,9 +87,35 @@ bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
 bspc rule -a burp-StartBurp: state=floating
 
-## Process on Startup
 
-processes=("picom" "polybar" "sxhkd" "dunst" "nitrogen" "xsettingsd")
+
+#  .-------------------------.
+#  | .---------------------. |
+#  | | Leer Configuraciones| |
+#  | `---------------------' |
+#  `-------------------------'
+
+
+## Establecer distribucion de Teclado
+keyboard_layout=$(Config-Editor --leer keyboard)
+
+if [[ -n "$keyboard_layout" ]]; then
+    setxkbmap "$keyboard_layout"
+fi
+
+## Establecer el Fondo de Pantalla
+SetWallpaper &
+
+
+#  .-------------------------.
+#  | .---------------------. |
+#  | |Procesos al Arrancar | |
+#  | `---------------------' |
+#  `-------------------------'
+
+
+## Matar todos los procesos al Reiniciar
+processes=("picom" "polybar" "eww" "sxhkd" "dunst" "xsettingsd")
 
 for process in "${processes[@]}"; do
   if pidof -q "$process"; then
@@ -68,35 +124,61 @@ for process in "${processes[@]}"; do
 done
 
 
-sxhkd -c ~/.config/bspwm/keys &
+## Lanzar el gestor de atajos de Teclado
+sxhkd -c "$BSPDIR"/keys &
 
-picom --config ~/.config/bspwm/picom.conf & 
+
+## Lanzar el Compositor picom
+picom --config "$BSPDIR"/picom.conf & 
+
 
 ## Lanzar polybar en cada monitor
 if type "xrandr"; then
     for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
-        MONITOR=$m polybar --reload -c ~/.config/bspwm/polybar/top_bar.ini &
+        MONITOR=$m polybar --reload -c "$BSPDIR"/polybar/top_bar.ini &
     done
 else
-    polybar --reload -c ~/.config/bspwm/polybar/top_bar.ini &
+    polybar --reload -c "$BSPDIR"/polybar/top_bar.ini &
 fi
 
-# Set Wallpaper
-nitrogen --restore &
 
-dunst -config ~/.config/bspwm/notifications &
+## Lanzar Eww
+Eww daemon &
+
+
+## Lanzar dunst para las notificaciones
+dunst -config "$BSPDIR"/notifications &
+
 
 ## Iniciar Polkit
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
-#Xresources
+
+#cargar el Xresources
 xrdb -merge "$HOME"/.Xresources &
 
-#Xsettingsd
-xsettingsd --config="${HOME}"/.config/bspwm/xsettingsd &
 
-# Buscar Actualizaciones
-while true;do
-    ~/.config/bspwm/scripts/Updates
-    sleep 300 # esperar 5 minutos antes de ejecutar nuevamente
-done &
+#Xsettingsd
+xsettingsd --config="$BSPDIR"/xsettingsd &
+
+# Lanzar los programas comprendidos en  ~/.config/autostart/
+Autostart &
+
+
+#  .-------------------------.
+#  | .---------------------. |
+#  | |Soporte para Widgets | |
+#  | `---------------------' |
+#  `-------------------------'
+
+# Contador de Actualizaciones
+if pgrep -x "Updates-Counter" > /dev/null; then
+    killall "Updates-Counter"
+fi
+Updates-Counter &
+
+# Obtener el Clima
+if pgrep -x "Weather-Updater" > /dev/null; then
+    killall "Weather-Updater"
+fi
+Weather-Updater &

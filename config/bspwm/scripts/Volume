@@ -73,6 +73,16 @@ dec_volume() {
     pactl set-sink-volume @DEFAULT_SINK@ -5% && notify_user
 }
 
+# Establecer el volumen
+set_volume() {
+    volume=$1
+    if [ "$volume" -ge 0 ] && [ "$volume" -le 100 ]; then
+        pactl set-sink-volume @DEFAULT_SINK@ "${volume}%"
+    else
+        ${notify_cmd} "Valor fuera de rango. Por favor, elige un valor entre 0 y 100."
+    fi
+}
+
 # Silenciar
 toggle_mute() {
     pactl set-sink-mute @DEFAULT_SINK@ toggle
@@ -87,6 +97,8 @@ if [ -x $(which pactl) ]; then
         inc_volume
     elif [[ "$1" == "--baj" ]]; then
         dec_volume
+    elif [[ "$1" == "--set" ]]; then
+        set_volume "$2"
     elif [[ "$1" == "--muteo" ]]; then
         toggle_mute
     else

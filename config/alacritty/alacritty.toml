@@ -1,4 +1,3 @@
-#!/bin/bash
 #===========================================================================
 #
 #
@@ -12,11 +11,14 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
+[general]
+
 import = [
    "~/.config/alacritty/catppuccin-mocha.toml"
 ]
 
-[shell]
+[terminal]
+[terminal.shell]
 program = "/bin/zsh"
 
 [env]

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #===========================================================================
 #
 #
@@ -12,14 +12,50 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
-# Directorio temporal donde se guardan los datos del clima
-TEMP_DIR="${HOME}/.cache/weather"
+## Este script ayuda a los widgets a obtener el estado de red ##
+##   Proporciona tanto el nombre como un icono de el estado   ##
 
-# Leer los valores de los archivos
-ICON=$(cat "$TEMP_DIR/icono" 2>/dev/null || echo "?")
-TEMP=$(cat "$TEMP_DIR/temp" 2>/dev/null || echo "N/A")
-COLOR=$(cat "$TEMP_DIR/color" 2>/dev/null || echo "#FFFFFF")
+# Obtener el estado de la red usando nmcli
+WIFI_SIGNAL=$(nmcli -t -f ACTIVE,SSID,SIGNAL dev wifi | grep -E '^yes|^sí' | cut -d: -f3)
+WIFI_NAME=$(nmcli -t -f ACTIVE,SSID dev wifi | grep -E '^yes|^sí' | cut -d: -f2)
+ETHERNET_STATUS=$(nmcli -t -f TYPE,STATE dev | grep '^ethernet:connected' | wc -l)
 
-# Mostrar el icono y la temperatura
-# Usamos printf para aplicar el color al icono
-echo " "%{F$COLOR}"$ICON $TEMP"
+# Determinar el icono según la señal de Wi-Fi
+get_wifi_icon() {
+    if [ "$WIFI_SIGNAL" -ge 75 ]; then
+        ICON="󰤨"
+    elif [ "$WIFI_SIGNAL" -ge 50 ]; then
+        ICON="󰤥"
+    elif [ "$WIFI_SIGNAL" -ge 25 ]; then
+        ICON="󰤢"
+    else
+        ICON="󰤟"
+    fi
+}
+
+# Verificar argumentos del script
+case "$1" in
+    --icono)
+        if [ "$ETHERNET_STATUS" -gt 0 ]; then
+            echo "󰈀"
+        elif [ -n "$WIFI_SIGNAL" ]; then
+            get_wifi_icon
+            echo "$ICON"
+        else
+            echo "󰤭"
+        fi
+        ;;
+    --nombre)
+        if [ "$ETHERNET_STATUS" -gt 0 ]; then
+            echo "Cable Conectado"
+        elif [ -n "$WIFI_NAME" ]; then
+            echo "$WIFI_NAME"
+        
+        else
+            echo "Sin Conexión"
+        fi
+        ;;
+    *)
+        echo "Uso: --icono | --nombre"
+        ;;
+esac

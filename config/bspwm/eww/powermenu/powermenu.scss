@@ -1,0 +1,115 @@
+//===========================================================================
+//
+//
+//███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+//████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+//██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+//██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+//██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//                          MarioRRom's Dotfiles
+//                 https://github.com/MarioRRom/bspwm-dotfiles
+//===========================================================================
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |     Principal      | |
+//  | `--------------------' |
+//  `------------------------'
+
+.powermenu {
+    font-family: Sofia Pro;
+    font-size: 14px;
+    background-color: $mantle;
+    margin: 10px;
+    text-shadow: 4px 4px 5px #000000;
+}
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |      Bloquear      | |
+//  | `--------------------' |
+//  `------------------------'
+
+.bloquear {
+    background-color: $surface2;
+    padding: 20px;;
+    margin: 5px;
+    border-radius: 50%;
+
+    &:hover {
+        background: radial-gradient(circle, $blue, $surface0);
+    }
+
+    &:active {
+        background: radial-gradient(circle, $sky, $surface0);
+    }
+}
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |   Cerrar Sesión    | |
+//  | `--------------------' |
+//  `------------------------'
+
+.sesion {
+    background-color: $surface2;
+    padding: 20px;;
+    margin: 5px;
+    border-radius: 50%;
+
+    &:hover {
+        background: radial-gradient(circle, $mauve, $surface0);
+    }
+
+    &:active {
+        background: radial-gradient(circle, $lavender, $surface0);
+    }
+}
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |     Reiniciar      | |
+//  | `--------------------' |
+//  `------------------------'
+
+.reiniciar {
+    background-color: $surface2;
+    padding: 20px;;
+    margin: 5px;
+    border-radius: 50%;
+
+    &:hover {
+        background: radial-gradient(circle, $peach, $surface0);
+    }
+
+    &:active {
+        background: radial-gradient(circle, $yellow, $surface0);
+    }
+}
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |       Apagar       | |
+//  | `--------------------' |
+//  `------------------------'
+
+.apagar {
+    background-color: $surface2;
+    padding: 20px;;
+    margin: 5px;
+    border-radius: 50%;
+
+    &:hover {
+        background: radial-gradient(circle, $red, $surface0);
+    }
+
+    &:active {
+        background: radial-gradient(circle, $maroon, $surface0);
+    }
+}

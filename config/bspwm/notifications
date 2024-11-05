@@ -13,12 +13,22 @@
 
 [global]
 
-## Display Settings ##
+
+#  .------------------------.
+#  | .--------------------. |
+#  | |      Pantalla      | |
+#  | `--------------------' |
+#  `------------------------'
 
 monitor = 0
 follow = mouse
 
-## Geometry ##
+
+#  .------------------------.
+#  | .--------------------. |
+#  | |     Geometría      | |
+#  | `--------------------' |
+#  `------------------------'
 
 width = (200, 444)
 height = 300
@@ -28,7 +38,11 @@ scale = 0
 notification_limit = 0
 
 
-## Progress Bar ##
+#  .------------------------.
+#  | .--------------------. |
+#  | |    Progress Bar    | |
+#  | `--------------------' |
+#  `------------------------'
 
 progress_bar = true
 progress_bar_height = 10
@@ -37,7 +51,11 @@ progress_bar_frame_width = 1
 progress_bar_max_width = 300
 
 
-# Other Settings ##
+#  .------------------------.
+#  | .--------------------. |
+#  | |   Otros Ajustes    | |
+#  | `--------------------' |
+#  `------------------------'
 
 indicate_hidden = yes
 transparency = 0
@@ -51,13 +69,17 @@ separator_color = "#89dceb"
 sort = yes
 
 
-## Text Settings ##
+#  .------------------------.
+#  | .--------------------. |
+#  | |  Ajustes de Texto  | |
+#  | `--------------------' |
+#  `------------------------'
 
-font = JetBrainsMono Nerd Font Medium 10
+font = Sofia Pro 10
 
 line_height = 0
 markup = full
-format = "<span size='x-large' font_desc='etBrainsMono Nerd Font Medium 10' weight='bold' foreground='#f9f9f9'>%s</span>\n%b"
+format = "<span size='x-large' font_desc='Sofia Pro 10' weight='bold' foreground='#f9f9f9'>%s</span>\n%b"
 alignment = center
 vertical_alignment = center
 show_age_threshold = 60
@@ -67,20 +89,33 @@ stack_duplicates = true
 hide_duplicate_count = false
 show_indicators = no
 
-## Icons ##
+
+#  .------------------------.
+#  | .--------------------. |
+#  | |       Iconos       | |
+#  | `--------------------' |
+#  `------------------------'
 
 icon_position = left
 max_icon_size = 80
-
-# Paths to default icons.
 icon_path = /usr/share/icons/Papirus-Dark/48x48/status/:/usr/share/icons/Papirus-Dark/48x48/devices/:/usr/share/icons/Papirus-Dark/48x48/apps
 
-## History ##
+
+#  .------------------------.
+#  | .--------------------. |
+#  | |     Historico      | |
+#  | `--------------------' |
+#  `------------------------'
 
 sticky_history = yes
 history_length = 20
 
-## Misc Settings ##
+
+#  .------------------------.
+#  | .--------------------. |
+#  | |   Otros Ajustes    | |
+#  | `--------------------' |
+#  `------------------------'
 
 browser = firefox
 title = Dunst
@@ -88,12 +123,24 @@ class = Dunst
 corner_radius = 13
 ignore_dbusclose = false
 
-## Mouse Interactions ##
+
+#  .------------------------.
+#  | .--------------------. |
+#  | |   Interacciones    | |
+#  | `--------------------' |
+#  `------------------------'
+
 mouse_left_click = close_current
 mouse_middle_click = do_action
 mouse_right_click = close_all
 
-## Colors ##
+
+#  .------------------------.
+#  | .--------------------. |
+#  | |      Colores       | |
+#  | `--------------------' |
+#  `------------------------'
+
 [urgency_low]
 timeout = 3
 background = "#181825"

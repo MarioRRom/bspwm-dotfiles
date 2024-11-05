@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #===========================================================================
 #
 #
@@ -12,14 +12,67 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
-# Directorio temporal donde se guardan los datos del clima
-TEMP_DIR="${HOME}/.cache/weather"
 
-# Leer los valores de los archivos
-ICON=$(cat "$TEMP_DIR/icono" 2>/dev/null || echo "?")
-TEMP=$(cat "$TEMP_DIR/temp" 2>/dev/null || echo "N/A")
-COLOR=$(cat "$TEMP_DIR/color" 2>/dev/null || echo "#FFFFFF")
+# Obtener el índice del dispositivo de entrada (micrófono)
+get_mic_index() {
+    pactl list sources short | grep -i input | awk '{print $1}'
+}
 
-# Mostrar el icono y la temperatura
-# Usamos printf para aplicar el color al icono
-echo " "%{F$COLOR}"$ICON $TEMP"
+# Obtener el volumen actual del micrófono
+get_mic_volume() {
+    pactl list sources | grep -A 15 "Source #$(get_mic_index)" | grep "Volume:" | head -n1 | awk '{print $5}' | tr -d '%'
+}
+
+# Generar barra de volumen del micrófono
+get_mic_volume_bar() {
+    volume=$(get_mic_volume)
+    filled=$((volume / 10))
+    empty=$((10 - filled))
+
+    bar=""
+    for i in $(seq 1 $filled); do
+        bar="${bar}━"
+    done
+    for i in $(seq 1 $empty); do
+        bar="${bar}─"
+    done
+
+    echo "$bar"
+}
+
+# Notificar al usuario (opcional)
+notify_user() {
+    ${notify_cmd} -i "$icon" "$(get_mic_volume_bar)"
+}
+
+# Aumentar el volumen del micrófono
+inc_mic_volume() {
+    pactl set-source-volume "$(get_mic_index)" +10% && notify_user
+}
+
+# Disminuir el volumen del micrófono
+dec_mic_volume() {
+    pactl set-source-volume "$(get_mic_index)" -10% && notify_user
+}
+
+# Ajustar el volumen del micrófono a un valor específico
+set_mic_volume() {
+    pactl set-source-volume "$(get_mic_index)" "$1%" && notify_user
+}
+
+# Ejecutar
+if [ -x $(which pactl) ]; then
+    if [[ "$1" == "--get" ]]; then
+        get_mic_volume
+    elif [[ "$1" == "--aum" ]]; then
+        inc_mic_volume
+    elif [[ "$1" == "--baj" ]]; then
+        dec_mic_volume
+    elif [[ "$1" == "--set" && -n "$2" ]]; then
+        set_mic_volume "$2"
+    else
+        echo "$(get_mic_volume_bar)"
+    fi
+else
+    ${notify_cmd} "'pactl' no está instalado."
+fi

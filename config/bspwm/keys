@@ -11,14 +11,18 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
-## BSPWM KEYS ##
+#  .------------------------.
+#  | .--------------------. |
+#  | |  Atajos de BSPWM   | |
+#  | `--------------------' |
+#  `------------------------'
 
 # quit/restart bspwm
 super + alt + {q,r}
 	bspc {quit,wm -r}
 
-# close and kill
-super + {_,shift + }w
+# Cerrar & Matar Ventana
+super + {_,shift + }q
 	bspc node -{c,k}
 
 # set the window state
@@ -42,24 +46,35 @@ super + shift + {1-6}
     bspc node -d $(bspc query -M -m | cut -d' ' -f1):^{1-6}
 
 
-## OTHER KEYS ##
-
+#  .------------------------.
+#  | .--------------------. |
+#  | |  Atajos Externos   | |
+#  | `--------------------' |
+#  `------------------------'
 
 # terminal emulator
 super + Return
 	alacritty
 
 # program launcher
-super + r
+super + d
 	rofi -show drun -theme ~/.config/bspwm/rofi.rasi
 
 # Explorador de Archivos
-super + e
-	thunar
+super + shift + e
+	nautilus
+
+# Navegador
+super + shift + f
+	firefox
 
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
+
+# Screenshot de Área
+alt + Print
+	gnome-screenshot -a -c -f "screenshots/captura-$(date +%Y-%m-%d_%H-%M-%S).png"
 
 # Volume control
 XF86Audio{RaiseVolume,LowerVolume,Mute}

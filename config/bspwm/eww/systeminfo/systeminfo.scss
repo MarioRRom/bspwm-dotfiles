@@ -1,0 +1,140 @@
+//===========================================================================
+//
+//
+//███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+//████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+//██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+//██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+//██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//                          MarioRRom's Dotfiles
+//                 https://github.com/MarioRRom/bspwm-dotfiles
+//===========================================================================
+
+.systeminfo {
+    background: $mantle;
+    margin: 15px;
+}
+
+
+.profilecard {
+    background: $base;
+    border-radius: 10px;
+    .profilepng {
+        margin: 10px;
+    }
+
+    .profiletext {
+        font-family: Sofia Pro;
+        font-weight: bold;
+        font-size: 13px;
+
+        .name {
+            color: $green;
+            font-size: 25px;
+        }
+    }
+}
+
+.circulargraph {
+    padding: 12px;
+    background-color: $base;
+    border-radius: 12px;
+
+    .cputext {
+        font-family: Sofia Pro;
+        font-size: 9px;
+        color: $red;
+
+    }
+
+    .cpubar {
+        color: $red;
+        label {
+            padding: 20px;
+            font-size: 23px;
+        }
+    }
+
+    .cpuicon {
+        font-family: JetBrainsMono NF;
+        background-color: $base;
+        border-radius: 3em;
+        padding: 12px 16px 12px 4px;
+        margin: 0.4em;
+        font-size: 30px;
+    }
+
+    .ramtext {
+        font-family: Sofia Pro;
+        font-size: 9px;
+        color: $yellow;
+
+    }
+
+    .rambar {
+        color: $yellow;
+        label {
+            padding: 20px;
+            font-size: 23px;
+        }
+    }
+
+    .ramicon {
+        font-family: JetBrainsMono NF;
+        background-color: $base;
+        border-radius: 3em;
+        padding: 12px 14px 12px 4px;
+        margin: 0.4em;
+        font-size: 30px;
+    }
+
+    .disktext {
+        font-family: Sofia Pro;
+        font-size: 9px;
+        color: $green;
+
+    }
+
+    .diskbar {
+        color: $green;
+        label {
+            padding: 20px;
+            font-size: 23px;
+        }
+    }
+
+    .diskicon {
+        font-family: JetBrainsMono NF;
+        background-color: $base;
+        border-radius: 3em;
+        padding: 12px 5px 12px 4px;
+        margin: 0.4em;
+        font-size: 35px;
+    }
+
+    .temptext {
+        font-family: Sofia Pro;
+        font-size: 9px;
+        color: $mauve;
+
+    }
+
+    .tempbar {
+        color: $mauve;
+        label {
+            padding: 20px;
+            font-size: 23px;
+        }
+    }
+
+    .tempicon {
+        font-family: JetBrainsMono NF;
+        background-color: $base;
+        border-radius: 3em;
+        padding: 12px 0px 12px 4px;
+        margin: 0.4em;
+        font-size: 35px;
+    }
+        
+}

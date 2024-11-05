@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #===========================================================================
 #
 #
@@ -12,14 +12,36 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
-# Directorio temporal donde se guardan los datos del clima
-TEMP_DIR="${HOME}/.cache/weather"
+## Este script establece el fondo de pantalla y permite tambien ##
+##        hacer un cambio random con la opcion --change         ##
 
-# Leer los valores de los archivos
-ICON=$(cat "$TEMP_DIR/icono" 2>/dev/null || echo "?")
-TEMP=$(cat "$TEMP_DIR/temp" 2>/dev/null || echo "N/A")
-COLOR=$(cat "$TEMP_DIR/color" 2>/dev/null || echo "#FFFFFF")
+# Directorio de bspwm
+BSPDIR="$HOME/.config/bspwm"
 
-# Mostrar el icono y la temperatura
-# Usamos printf para aplicar el color al icono
-echo " "%{F$COLOR}"$ICON $TEMP"
+# Comprobar si feh está instalado
+if ! command -v feh &> /dev/null; then
+    notify-send "Feh no está instalado. Por favor, instálalo para continuar."
+    exit 1
+fi
+
+# Cargar la configuracion del Usuario
+wallpaper_mode=$(Config-Editor --leer wallisrandom)
+wallpaper_file=$(Config-Editor --leer wallfilename)
+
+# Función para cambiar el fondo de pantalla
+change_wallpaper() {
+    feh --bg-fill "$(find ${BSPDIR}/wallpapers/ -type f | shuf -n 1)" &
+}
+
+# Comprobar si se pasó la opción --change
+if [[ "$1" == "--change" ]]; then
+    change_wallpaper
+    exit 0
+fi
+
+# Si no se pasa ningún argumento, lee la configuración
+if [[ "$wallpaper_mode" == true ]]; then
+    change_wallpaper
+else
+    feh --bg-fill "${BSPDIR}/wallpapers/${wallpaper_file}" &
+fi

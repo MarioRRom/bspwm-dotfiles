@@ -1,0 +1,113 @@
+;;===========================================================================
+;;
+;;
+;;███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+;;████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+;;██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+;;██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+;;██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+;;╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+;;                          MarioRRom's Dotfiles
+;;                 https://github.com/MarioRRom/bspwm-dotfiles
+;;===========================================================================
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |     Variables      | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+;; Fecha y Hora
+(defpoll HORA :interval "5s" 'LC_TIME="en_US.UTF-8" date "+%I:%M %p"')
+(defpoll DIA :interval "5s" 'LC_TIME="es_AR.UTF-8" date +\"%A\"')
+
+;; Obtener el Clima
+(defpoll WHICON :interval "30s" 'cat ~/.cache/weather/icono')
+(defpoll WHTEMP :interval "30s" 'cat ~/.cache/weather/temp')
+(defpoll WHDESC :interval "30s" 'cat ~/.cache/weather/descripcion')
+(defpoll WHUBI :interval "30s" 'cat ~/.cache/weather/ubicacion')
+(defpoll WHVIEN :interval "30s" 'cat ~/.cache/weather/viento')
+(defpoll WHHUM :interval "30s" 'cat ~/.cache/weather/humedad')
+(defpoll WHCOLOR :interval "30s" :initial "white" 'cat ~/.cache/weather/color')
+(defpoll WHBG :interval "30s" :initial "black" 'cat ~/.cache/weather/bg')
+
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |    Widget Base     | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+(defwidget centerpanel []
+    (box
+        :orientation "h"
+        :spacing 15
+        
+        ;; Notificaciones
+        (box
+            :class "notificaciones"
+            (label :text "Notificaciones Proximamente")
+        )
+
+        ;; Bloque Derecho
+        (box
+            :orientation "v"
+            :space-evenly false
+            :spacing 15
+
+            ;; Fecha y Hora
+            (box
+                :orientation "v"
+                :space-evenly false
+                (label :class "hora" :text HORA)
+                (label :class "dia" :text DIA)
+            )
+
+            ;; Calendario
+            (box
+                :class "calendarbox"
+                (calendar :class "calendario")
+            )
+
+            ;; Clima
+            (box
+                :class "climabox"
+                :style "background: ${WHBG}"
+                :orientation "h"
+
+                ;; Bloque Izquierdo
+                (box
+                    :orientation "v"
+                    :halign "start"
+                    :valign "center"
+                    :style "background: transparent"
+                    :space-evenly false
+                    (label :class "climatemp" :text WHTEMP :halign "start")
+                    (label :class "climadesc" :text WHDESC :halign "start")
+                    (label :class "climasep" :text "─────────────"  :halign "start")
+                    (label :class "climaubi" :text " ${WHUBI}" :halign "start")
+                    (label :class "climavien" :text "  ${WHVIEN}" :halign "start")
+                    (label :class "climahum" :text "󰖌 ${WHHUM}" :halign "start")
+                )
+
+                (label :class "climaicon" :text WHICON :halign "center" :style "color: ${WHCOLOR}")
+            )
+        )
+    )
+)
+
+(defwindow centerpanel
+    :stacking "bg"
+    :windowtype "dock"
+    :wm-ignore true
+    :geometry (geometry
+        :x "0"
+        :y "58px"
+        :anchor "top center"
+        :width "600px"
+        :height "250px"
+    )
+    (centerpanel)
+)

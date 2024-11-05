@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #===========================================================================
 #
 #
@@ -12,14 +12,41 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
-# Directorio temporal donde se guardan los datos del clima
-TEMP_DIR="${HOME}/.cache/weather"
+##   Este script activa y desactiva la luz nocturna   ##
+## util para varios usuarios que usan el pc por horas ##
 
-# Leer los valores de los archivos
-ICON=$(cat "$TEMP_DIR/icono" 2>/dev/null || echo "?")
-TEMP=$(cat "$TEMP_DIR/temp" 2>/dev/null || echo "N/A")
-COLOR=$(cat "$TEMP_DIR/color" 2>/dev/null || echo "#FFFFFF")
+CACHE_DIR="$HOME/.cache"
+STATUS_FILE="$CACHE_DIR/luz_nocturna.status"
 
-# Mostrar el icono y la temperatura
-# Usamos printf para aplicar el color al icono
-echo " "%{F$COLOR}"$ICON $TEMP"
+
+# Verificar si Redshift está instalado
+if ! command -v redshift &> /dev/null; then
+    notify-send "Redshift no está instalado" "Por favor, instala Redshift para usar la luz nocturna."
+    exit 1
+fi
+
+# Función para mostrar el estado actual de Redshift
+check_status() {
+    if [[ -f $STATUS_FILE ]]; then
+        echo "encendido"
+    else
+        echo "apagado"
+    fi
+}
+
+# Comprobar los argumentos
+if [[ $1 == "--status" ]]; then
+    check_status
+    exit 0
+fi
+
+# Comprobar el estado actual de Redshift usando el archivo de estado
+if [[ -f $STATUS_FILE ]]; then
+    # Si el archivo de estado existe, desactivarlo
+    redshift -x
+    rm -f "$STATUS_FILE"  # Eliminar el archivo de estado
+else
+    # Si el archivo de estado no existe, activarlo
+    redshift -O 3500 &
+    touch "$STATUS_FILE"  # Crear el archivo de estado
+fi

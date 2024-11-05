@@ -1,0 +1,138 @@
+;;===========================================================================
+;;
+;;
+;;███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+;;████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+;;██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+;;██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+;;██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+;;╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+;;                          MarioRRom's Dotfiles
+;;                 https://github.com/MarioRRom/bspwm-dotfiles
+;;===========================================================================
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |     Variables      | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+(defvar image-lock "assets/lock.png")
+(defvar image-logout "assets/logout.png")
+(defvar image-reboot "assets/reboot.png")
+(defvar image-poweroff "assets/poweroff.png")
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |    Widget Base     | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+(defwidget powermenu []
+    (box
+        
+        :orientation "v"
+        :halign "center"
+        :valign "center"
+        :space-evenly false
+        :spacing 5
+
+        ;; Contenedora Bloques Superiores
+        (box
+            :orientation "h"
+            :spacing 10
+
+            ;; Boton de Bloquear
+            (box
+                :orientation "v"
+                :space-evenly false
+                :halign "center"
+                :valign "center"
+                (button
+                    :class "bloquear"
+                    :halign "center"
+                    :valign "center"
+                    :onclick "betterlockscreen --lock"
+                    (image :path image-lock :image-width 40 :image-height 40)
+                )
+                (label :text "Bloquear" :justify "center") 
+            )
+
+            ;; Boton de Cerrar Sesión
+            (box
+                :orientation "v"
+                :space-evenly false
+                :halign "center"
+                :valign "center"
+                (button
+                    :class "sesion"
+                    :halign "center"
+                    :valign "center"
+                    :onclick "bspc quit"
+                    (image :path image-logout :image-width 40 :image-height 40)
+                )
+                (label :text "Cerrar Sesión" :justify "center") 
+            )
+        )
+
+        ;; Contenedora Bloques Inferiores
+        (box
+            :orientation "h"
+            :spacing 10
+            ;; Boton de Reiniciar
+            (box
+                :orientation "v"
+                :space-evenly false
+                :halign "center"
+                :valign "center"
+                (button
+                    :class "reiniciar"
+                    :halign "center"
+                    :valign "center"
+                    :onclick "reboot"
+                    (image :path image-reboot :image-width 40 :image-height 40)
+                )
+                (label :text "Reiniciar" :justify "center") 
+            )
+
+            ;; Boton de Apagar
+            (box
+                :orientation "v"
+                :space-evenly false
+                :halign "center"
+                :valign "center"
+                (button
+                    :class "apagar"
+                    :halign "center"
+                    :valign "center"
+                    :onclick "poweroff"
+                    (image :path image-poweroff :image-width 40 :image-height 40)
+                )
+                (label :text "Apagar" :justify "center") 
+            )
+        )
+    )
+)
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |      Ventana       | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+(defwindow powermenu
+    :stacking "bg"
+    :windowtype "dock"
+    :wm-ignore true
+    :geometry (geometry
+        :x "-10"
+        :y "58px"
+        :anchor "top right"
+        :width "200px"
+        :height "200px"
+    )
+    (powermenu)
+)

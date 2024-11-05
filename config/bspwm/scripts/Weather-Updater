@@ -1,0 +1,99 @@
+#!/bin/sh
+#===========================================================================
+#
+#
+#███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+#████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+#██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+#██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+#██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+#╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+#                          MarioRRom's Dotfiles
+#                 https://github.com/MarioRRom/bspwm-dotfiles
+#===========================================================================
+
+
+##           Este script toma el clima y lo guarda en archivos temporales           ##
+## Luego estos pueden ser cargados por distintos widgets sin repetir todo el codigo ##
+##            ni generar cargas innecesarias repitiendo el mismo proceso            ##
+
+
+## Cargar informacion de configvars (utiliza Config-Editor)
+API_KEY=$(Config-Editor --leer weatherkey)
+CITY_ID=$(Config-Editor --leer weathercity)
+UNITS=$(Config-Editor --leer weatherunits)
+
+## Crear Archivos temporales
+TEMP_DIR="${HOME}/.cache/weather"
+
+# Crear directorio temporal si no existe
+mkdir -p "$TEMP_DIR"
+
+# Función para obtener el clima y guardar datos en archivos temporales
+get_weather() {
+    WEATHER=$(curl -sf "http://api.openweathermap.org/data/2.5/weather?id=$CITY_ID&units=$UNITS&appid=$API_KEY")
+
+    if [ -n "$WEATHER" ]; then
+        # Obtener datos
+        TEMP=$(echo $WEATHER | jq '.main.temp' | xargs printf "%.0f")
+        ICON_CODE=$(echo $WEATHER | jq -r '.weather[0].icon')
+        DESCRIPTION=$(echo $WEATHER | jq -r '.weather[0].description')
+        CITY=$(echo $WEATHER | jq -r '.name')
+        COUNTRY=$(echo $WEATHER | jq -r '.sys.country')
+        WIND=$(echo $WEATHER | jq -r '.wind.speed')
+        HUMIDITY=$(echo $WEATHER | jq -r '.main.humidity')
+
+        # Definir iconos y colores basados en el código de icono de OpenWeather
+        case $ICON_CODE in
+            01d) ICON="󰖨"; COLOR="#FAB387"; BG="#D7A65F";; 
+            01n) ICON=""; COLOR="#89B4FA"; BG="#1C3A8E";; 
+            02d | 02n) ICON="󰅟"; COLOR="#A6ADC8"; BG="#5E6378";; 
+            03d | 03n) ICON="󰅟"; COLOR="#A6ADC8"; BG="#5E6378";; 
+            04d | 04n) ICON="󰅟"; COLOR="#A6ADC8"; BG="#5E6378";; 
+            09d | 09n) ICON=""; COLOR="#94E2D5"; BG="#3D796C";; 
+            10d) ICON=""; COLOR="#74C7EC"; BG="#447E91";; 
+            10n) ICON=""; COLOR="#74C7EC"; BG="#447E91";; 
+            11d | 11n) ICON=""; COLOR="#f9e2af"; BG="#FF6A79";; 
+            13d | 13n) ICON=""; COLOR="#FFFFFF"; BG="#97BCD2";; 
+            50d | 50n) ICON=""; COLOR="#C6D0F5"; BG="#555F78";; 
+            *) ICON=""; COLOR="#F28FAD"; BG="#9A4A4E";; 
+        esac
+
+        # Determinar unidad de temperatura
+        if [ "$UNITS" == "metric" ]; then
+            TEMP_UNIT="°C"
+        elif [ "$UNITS" == "imperial" ]; then
+            TEMP_UNIT="°F"
+        else
+            TEMP_UNIT="" # En caso de no estar definida
+        fi
+
+        # Guardar variables en archivos temporales
+        echo "$ICON" > "$TEMP_DIR/icono"
+        echo "$TEMP$TEMP_UNIT" > "$TEMP_DIR/temp"
+        echo "$CITY, $COUNTRY" > "$TEMP_DIR/ubicacion"
+        echo "$WIND'm/s'" > "$TEMP_DIR/viento"
+        echo "$HUMIDITY%" > "$TEMP_DIR/humedad"
+        echo "$DESCRIPTION" > "$TEMP_DIR/descripcion"
+        echo "$COLOR" > "$TEMP_DIR/color"
+        echo "$BG" > "$TEMP_DIR/bg"
+
+    else
+        # Manejo de errores en caso de fallo de la API
+        echo "?" > "$TEMP_DIR/icono"
+        echo "N/A" > "$TEMP_DIR/temp"
+        echo "Error en API" > "$TEMP_DIR/descripcion"
+        echo "#F28FAD" > "$TEMP_DIR/color"
+        echo "#9A4A4E" > "$TEMP_DIR/fondo"
+    fi
+}
+
+# Ejecutar la función para obtener el clima
+get_weather
+
+# Programar la próxima ejecución después de 15 minutos
+while true; do
+    echo "Clima Actualizado"
+    sleep 900  # 15 minutos en segundos
+    get_weather # Vuelve a Ejecutarse
+done

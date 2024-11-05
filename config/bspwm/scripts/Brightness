@@ -51,7 +51,6 @@ get_brightness_bar() {
     echo "$bar"
 }
 
-
 # Notificar al usuario
 notify_user() {
     ${notify_cmd} -i "$icon" "$(get_brightness_bar)"
@@ -67,6 +66,11 @@ dec_brightness() {
     brightnessctl set 10%- && notify_user
 }
 
+# Ajustar el brillo a un valor específico
+set_brightness() {
+    brightnessctl set "$1%"
+}
+
 # Ejecutar
 if [ -x $(which brightnessctl) ]; then
     if [[ "$1" == "--get" ]]; then
@@ -75,6 +79,8 @@ if [ -x $(which brightnessctl) ]; then
         inc_brightness
     elif [[ "$1" == "--baj" ]]; then
         dec_brightness
+    elif [[ "$1" == "--set" && -n "$2" ]]; then
+        set_brightness "$2"
     else
         echo "$(get_brightness_bar)"
     fi

@@ -11,8 +11,15 @@
 //                 https://github.com/MarioRRom/bspwm-dotfiles
 //===========================================================================
 
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |Configuración Global| |
+//  | `--------------------' |
+//  `------------------------'
+
 configuration {
-    font:           				"JetBrainsMono Nerd Font Medium 10";
+    font:           				"Sofia Pro Medium 10";
     show-icons:                     true;
 	icon-theme: 					"Papirus-Dark";
     display-drun: 					"";
@@ -20,13 +27,13 @@ configuration {
     disable-history:                false;
 	sidebar-mode: 					false;
 	click-to-exit: 					true;
-    location:                       1;
 }
 
 * {
-    BG:                             #18182599;
+    BG:                             #181825;
     BGA:                            #313244;
     FG:                             #cdd6f4;
+    SKY:                            #89dceb;
     UGT:                            #f38ba8;
 }
 
@@ -36,10 +43,44 @@ window {
     text-color:                     @FG;
     border-radius:                  12px;
     border:                         2px;
-    border-color:                   #89dceb;
-    width:                          406px;
-    x-offset:                       12px;
-    y-offset:                       57px;
+    border-color:                   @SKY;
+    width:                          750px;
+    x-offset:                       0px;
+    y-offset:                       0px;
+    location:                       center;
+}
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |   Box Principal    | |
+//  | `--------------------' |
+//  `------------------------'
+
+mainbox {
+    background-color:               @BG;
+    children:                       [ inputbar, listview ];
+    spacing:                        15px;
+    padding:                        20px;
+}
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |      InputBar      | |
+//  | `--------------------' |
+//  `------------------------'
+
+inputbar {
+	children: 						[ textbox-prompt-colon, entry ];
+    spacing:                        0px;
+    background-color:               @BGA;
+    text-color:                     @FG;
+    expand:                         false;
+    border-radius:                  8px;
+    position:                       center;
+    border:                         0px;
+    border-color:                   @SKY;
 }
 
 prompt {
@@ -53,8 +94,8 @@ textbox-prompt-colon {
 	str: 							"";
     background-color:               @BGA;
     text-color:                     @FG;
-    padding:                        10px 0px 0px 12px;
-	font:							"JetBrainsMono Nerd Font Medium 16";
+    padding:                        10px 0px 0px 10px;
+	font:							"Material Icons 12";
 }
 
 entry {
@@ -63,20 +104,10 @@ entry {
     placeholder-color:              @FG;
     expand:                         true;
     horizontal-align:               0;
-    placeholder:                    "Type here to search";
-    font:							"JetBrainsMono Nerd Font Bold 12";
+    placeholder:                    " Buscar...";
+    font:							"Sofia Pro Bold 12";
     blink:                          true;
     padding:                        10px;
-}
-
-inputbar {
-	children: 						[ textbox-prompt-colon, entry ];
-    spacing:                        0px;
-    background-color:               @BGA;
-    text-color:                     @FG;
-    expand:                         false;
-    border-radius:                  8px;
-    position:                       center;
 }
 
 case-indicator {
@@ -86,45 +117,64 @@ case-indicator {
 }
 
 
+//  .------------------------.
+//  | .--------------------. |
+//  | |      ListView      | |
+//  | `--------------------' |
+//  `------------------------'
+
 listview {
     background-color:               #00000000;
     columns:                        3;
-    lines:							5;
-    spacing:                        4px;
-    cycle:                          false;
+    lines:							8;
+    spacing:                        5px;
+    cycle:                          true;
     dynamic:                        true;
+    scrollbar:                      true;
     layout:                         vertical;
+    fixed-height:                   true;
+    fixed-columns:                  true;
+    cursor:                         pointer;
 }
 
-mainbox {
-    background-color:               @BG;
-    children:                       [ inputbar, listview ];
-    spacing:                       	40px;
-    padding:                        30px;
+scrollbar {
+    handle-width:                10px ;
+    handle-color:                @SKY;
+    border-radius:               10px;
+    background-color:            @BGA;
 }
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |     Elementos      | |
+//  | `--------------------' |
+//  `------------------------'
 
 element {
     background-color:               #00000000;
+    spacing:                        10px;
+    margin:                         0px;
     text-color:                     @FG;
-    orientation:                    vertical;
     border-radius:                  8px;
-    padding:                        20px;
+    padding:                        5px 10px;
+    cursor:                         pointer;
 }
 
 element-icon {
     background-color: 				inherit;
     text-color:       				inherit;
-    horizontal-align:               0.5;
-    vertical-align:                 0.5;
-    size:                           48px;
+    size:                           35px;
+    cursor:                         inherit;
 }
 
 element-text {
     background-color: 				inherit;
     text-color:       				inherit;
     expand:                         true;
-    horizontal-align:               0.5;
+    horizontal-align:               0.0;
     vertical-align:                 0.5;
+    cursor:                         inherit;
 }
 
 element normal.urgent,
@@ -136,13 +186,13 @@ element alternate.urgent {
 
 element normal.active,
 element alternate.active {
-    background-color:               @BGA;
-    text-color:                     @FG;
+    background-color:               @SKY;
+    text-color:                     #000000;
 }
 
 element selected {
-    background-color:               @BGA;
-    text-color:                     @FG;
+    background-color:               @SKY;
+    text-color:                     #000000;
     border-radius:                  8px;
 }
 
@@ -152,6 +202,22 @@ element selected.urgent {
 }
 
 element selected.active {
-    background-color:               @BGA;
-    color:                          @FG;
+    background-color:               @SKY;
+    color:                          #000000;
+}
+
+error-message {
+    padding:                     15px;
+    border:                      2px solid;
+    border-radius:               12px;
+    background-color:            @BG;
+    text-color:                  @FG;
+}
+
+textbox {
+    background-color:            @BG;
+    text-color:                  @FG;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+    highlight:                   none;
 }

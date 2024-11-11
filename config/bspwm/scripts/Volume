@@ -54,6 +54,7 @@ get_icon() {
 notify_user() {
     get_icon
     ${notify_cmd} -i "$icon" "$(get_volume_bar)"
+    aplay ~/.config/bspwm/assets/pop.wav
 }
 
 # Aumentar el volumen

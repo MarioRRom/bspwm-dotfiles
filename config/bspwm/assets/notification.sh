@@ -1,3 +1,4 @@
+#!/bin/bash
 #===========================================================================
 #
 #
@@ -11,24 +12,4 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
-## NO MODIFIQUES ESTE ARCHIVO A MANO, PREFERIBLEMENTE USA "Config-Editor" ##
-##    Este archivo contiene configuraciones de el entorno que se cargan   ##
-##    a lo largo de toda la configuracion, una variable invalida podria   ##
-##       ocasionar muchos problemas en tus dotfiles, ten precación        ##
-
-
-## Configuración de BSPWM
-bsp_borwidth=2
-bsp_wingap=12
-
-## Distribucion de Teclado
-keyboard=latam
-
-## Fondo de Pantalla
-wallisrandom=true
-wallfilename="arbol.jpg"
-
-## Weather Config
-weatherkey="b412dae84b266e46cbc31c1d476f03a7"
-weathercity="3841956"
-weatherunits="metric"
+aplay ~/.config/bspwm/assets/notification.wav

@@ -86,7 +86,7 @@
                     :space-evenly false
                     (label :class "climatemp" :text WHTEMP :halign "start")
                     (label :class "climadesc" :text WHDESC :halign "start")
-                    (label :class "climasep" :text "─────────────"  :halign "start")
+                    (label :class "climasep" :text "────────────"  :halign "start")
                     (label :class "climaubi" :text " ${WHUBI}" :halign "start")
                     (label :class "climavien" :text "  ${WHVIEN}" :halign "start")
                     (label :class "climahum" :text "󰖌 ${WHHUM}" :halign "start")

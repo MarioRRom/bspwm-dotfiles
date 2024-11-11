@@ -22,13 +22,12 @@
 (defpoll USERNAME :interval "5s" "whoami")
 (defpoll OSNAME :interval "5s" "grep '^PRETTY_NAME' /etc/os-release | cut -d '=' -f2")
 (defpoll UPTIME :interval "5s" "uptime -p")
-(defvar profileimg "profile.png")
+(defvar profileimg "~/.face")
 
 ;; Graficos
 (defpoll CPUPER :interval "1s" "top -bn1 | grep 'Cpu(s)' | awk '{print $2 + $4}'")
 (defpoll RAMPER :interval "30s" "free | awk '/Mem/ {printf \"%.0f\", $3/$2 * 100.0}'")
 (defpoll DISKPER :interval "30s" "df -h / | grep '/' | awk '{print $5}' | sed 's/%//g'")
-(defpoll AVG_TEMP :interval "30s" "sensors | grep '°C' | awk '{print \$3}' | sed 's/[^0-9.]//g' | awk '{sum+=\$1} END {if (NR > 0) printf \"%.0f\", sum/NR; else print 0}'")
 
 
 ;;  .------------------------.
@@ -143,13 +142,13 @@
                 (overlay
                     (circular-progress
                         :class "tempbar"
-                        :value AVG_TEMP
+                        :value {EWW_TEMPS.CORETEMP_CORE_0}
                         :thickness 50
                         :start-at 75
                     )
                     (label :class "temptext" :text "TEMP:" :halign "start" :valign "start")
                     (label :class "tempicon" :text "")
-                    (label :class "temptext" :text "${AVG_TEMP}°C" :halign "end" :valign "end")
+                    (label :class "temptext" :text "${EWW_TEMPS.CORETEMP_CORE_0}°C" :halign "end" :valign "end")
                 )
             )
         ) 

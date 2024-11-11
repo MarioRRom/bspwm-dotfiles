@@ -48,11 +48,14 @@ workspaces
 #  | |    Decoraciones     | |
 #  | `---------------------' |
 #  `-------------------------'
+bsp_borwidth=$(Config-Editor --leer bsp_borwidth)
+bspc config border_width         "$bsp_borwidth"
 
-bspc config border_width         2
 bspc config active_border_color "#45475a"
 bspc config focused_border_color "#89dceb"
-bspc config window_gap          12
+
+bsp_wingap=$(Config-Editor --leer bsp_wingap)
+bspc config window_gap          "$bsp_wingap"
 
 bspc config split_ratio          0.52
 bspc config single_monocle true

@@ -28,6 +28,7 @@
         font-family: Sofia Pro;
         font-weight: bold;
         font-size: 13px;
+        text-shadow: 4px 4px 5px #000000;
 
         .name {
             color: $green;
@@ -40,6 +41,7 @@
     padding: 12px;
     background-color: $base;
     border-radius: 12px;
+    text-shadow: 4px 4px 5px #000000;
 
     .cputext {
         font-family: Sofia Pro;
@@ -58,7 +60,7 @@
 
     .cpuicon {
         font-family: JetBrainsMono NF;
-        background-color: $base;
+        background-color: $surface0;
         border-radius: 3em;
         padding: 12px 16px 12px 4px;
         margin: 0.4em;
@@ -82,7 +84,7 @@
 
     .ramicon {
         font-family: JetBrainsMono NF;
-        background-color: $base;
+        background-color: $surface0;
         border-radius: 3em;
         padding: 12px 14px 12px 4px;
         margin: 0.4em;
@@ -106,7 +108,7 @@
 
     .diskicon {
         font-family: JetBrainsMono NF;
-        background-color: $base;
+        background-color: $surface0;
         border-radius: 3em;
         padding: 12px 5px 12px 4px;
         margin: 0.4em;
@@ -130,7 +132,7 @@
 
     .tempicon {
         font-family: JetBrainsMono NF;
-        background-color: $base;
+        background-color: $surface0;
         border-radius: 3em;
         padding: 12px 0px 12px 4px;
         margin: 0.4em;

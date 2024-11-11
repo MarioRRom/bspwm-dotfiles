@@ -17,6 +17,7 @@
 
 # Directorio de bspwm
 BSPDIR="$HOME/.config/bspwm"
+TEMP_DIR="${HOME}/.cache/"
 
 # Comprobar si feh está instalado
 if ! command -v feh &> /dev/null; then
@@ -28,9 +29,50 @@ fi
 wallpaper_mode=$(Config-Editor --leer wallisrandom)
 wallpaper_file=$(Config-Editor --leer wallfilename)
 
-# Función para cambiar el fondo de pantalla
+# Función para poner un fondo de pantalla aleatorio y guardarlo
+random_wallpaper() {
+    # Encuentra un wallpaper aleatorio
+    selected_wallpaper=$(find ${BSPDIR}/wallpapers/ -type f | shuf -n 1)
+    
+    # Cambia el fondo de pantalla
+    feh --bg-fill "$selected_wallpaper" &
+    
+    # Guarda el wallpaper actual en el archivo
+    echo "$selected_wallpaper" > "${BSPDIR}/current_wallpaper.txt"
+}
+
+# Función para cambiar al siguiente fondo de pantalla
 change_wallpaper() {
-    feh --bg-fill "$(find ${BSPDIR}/wallpapers/ -type f | shuf -n 1)" &
+    # Ruta donde se guarda el fondo actual
+    wallpaper_temp="${TEMP_DIR}/current_wallpaper.txt"
+    
+    # Encuentra la lista de wallpapers
+    wallpapers=($(find ${BSPDIR}/wallpapers/ -type f))
+    
+    # Si el archivo de fondo actual existe, toma el fondo actual, de lo contrario, usa el primero
+    if [[ -f "$wallpaper_temp" ]]; then
+        current_wallpaper=$(cat "$wallpaper_temp")
+    else
+        current_wallpaper="${wallpapers[0]}"
+    fi
+    
+    # Encuentra el índice del fondo actual
+    for i in "${!wallpapers[@]}"; do
+        if [[ "${wallpapers[$i]}" == "$current_wallpaper" ]]; then
+            current_index=$i
+            break
+        fi
+    done
+    
+    # Calcula el índice del siguiente fondo
+    next_index=$(( (current_index + 1) % ${#wallpapers[@]} ))
+    
+    # Establece el siguiente fondo
+    next_wallpaper="${wallpapers[$next_index]}"
+    feh --bg-fill "$next_wallpaper" &
+    
+    # Guarda el nuevo fondo actual
+    echo "$next_wallpaper" > "$wallpaper_temp"
 }
 
 # Comprobar si se pasó la opción --change
@@ -41,7 +83,9 @@ fi
 
 # Si no se pasa ningún argumento, lee la configuración
 if [[ "$wallpaper_mode" == true ]]; then
-    change_wallpaper
+    # Si wallisrandom esta activado, se toma un wallpaper random.
+    random_wallpaper
 else
+    # De lo contrario, se tomará el wallpaper establecido.
     feh --bg-fill "${BSPDIR}/wallpapers/${wallpaper_file}" &
 fi

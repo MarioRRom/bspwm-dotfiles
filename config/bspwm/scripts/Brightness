@@ -54,6 +54,7 @@ get_brightness_bar() {
 # Notificar al usuario
 notify_user() {
     ${notify_cmd} -i "$icon" "$(get_brightness_bar)"
+    aplay ~/.config/bspwm/assets/pop.wav
 }
 
 # Aumentar el brillo

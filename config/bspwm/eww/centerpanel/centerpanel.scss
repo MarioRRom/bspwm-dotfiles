@@ -26,6 +26,7 @@
     font-weight: bold;
     font-size: 50px;
     margin-top: 20px;
+    text-shadow: 4px 4px 5px #000000;
 }
 
 .dia {
@@ -34,12 +35,14 @@
     margin-top: -6px;
     margin-bottom: 5px;
     color: $green;
+    text-shadow: 4px 4px 5px #000000;
 }
 
 .calendarbox {
     background-color: $base;
     padding: 10px 10px 0px 10px;
     border-radius: 15px;
+    text-shadow: 4px 4px 5px #000000;
 }
 
 .calendario {
@@ -85,7 +88,7 @@
         font-size: 100px;
         margin-right: 45px;
         margin-top: -5px;
-        text-shadow: 2px 2px 5px $base;
+        text-shadow: 2px 2px 5px #000000;
     }
 
     .climatemp {
@@ -93,7 +96,7 @@
         font-weight: lighter;
         font-size: 40px;
         margin-bottom: -5px;
-        text-shadow: 2px 2px 5px $base;
+        text-shadow: 2px 2px 5px #000000;
     }
 
     .climadesc {
@@ -101,7 +104,7 @@
         font-size: 15px;
         font-weight: lighter;
         margin-bottom: -6px;
-        text-shadow: 2px 2px 5px $base;
+        text-shadow: 2px 2px 3px #000000;
     }
 
     .climasep {
@@ -110,7 +113,7 @@
         font-size: 15px;
         color: $text;
         margin-bottom: -8px;
-        text-shadow: 2px 2px 5px $base;
+        text-shadow: 2px 2px 3px #000000;
     }
 
     .climaubi {
@@ -118,7 +121,7 @@
         font-size: 15px;
         font-weight: lighter;
         margin-bottom: -4px;
-        text-shadow: 2px 2px 5px $base;
+        text-shadow: 2px 2px 3px #000000;
     }
 
     .climavien {
@@ -127,7 +130,7 @@
         font-weight: lighter;
         margin-bottom: -4px;
         margin-left: -2px;
-        text-shadow: 2px 2px 5px $base;
+        text-shadow: 2px 2px 3px #000000;
     }
 
     .climahum {
@@ -135,6 +138,6 @@
         font-size: 15px;
         font-weight: lighter;
         margin-bottom: -5px;
-        text-shadow: 2px 2px 5px $base;
+        text-shadow: 2px 2px 3px #000000;
     }
 }

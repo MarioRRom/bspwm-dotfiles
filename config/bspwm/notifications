@@ -152,8 +152,10 @@ timeout = 6
 background = "#181825"
 foreground = "#cdd6f4"
 highlight  = "#89dceb"
+script = "~/.config/bspwm/assets/notification.sh"
 
 [urgency_critical]
 timeout = 0
 background = "#181825"
 foreground = "#f38ba8"
+script = "~/.config/bspwm/assets/notification.sh"

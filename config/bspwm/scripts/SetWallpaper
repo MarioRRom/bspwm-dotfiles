@@ -38,7 +38,7 @@ random_wallpaper() {
     feh --bg-fill "$selected_wallpaper" &
     
     # Guarda el wallpaper actual en el archivo
-    echo "$selected_wallpaper" > "${BSPDIR}/current_wallpaper.txt"
+    echo "$selected_wallpaper" > "${TEMP_DIR}/current_wallpaper.txt"
 }
 
 # Función para cambiar al siguiente fondo de pantalla

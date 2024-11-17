@@ -13,6 +13,11 @@
 #===========================================================================
 
 
+## Cargar los ajustes de Monitor
+## Puedes crear este archivo usando arandr
+~/.screenlayout/screenlayout.sh
+sleep 1
+
 #  .-------------------------.
 #  | .---------------------. |
 #  | | Variables de Entono | |
@@ -91,13 +96,11 @@ bspc rule -a Screenkey manage=off
 bspc rule -a burp-StartBurp: state=floating
 
 
-
 #  .-------------------------.
 #  | .---------------------. |
 #  | | Leer Configuraciones| |
 #  | `---------------------' |
 #  `-------------------------'
-
 
 ## Establecer distribucion de Teclado
 keyboard_layout=$(Config-Editor --leer keyboard)

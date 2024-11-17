@@ -15,4 +15,4 @@
 ##      Este script establece el directorio de configuracion     ##
 ## puedes usar Eww open y ya, no hay que definir -c todo el rato ##
 
-exec eww -c "${HOME}/.config/bspwm/eww" "$@"
+exec eww -c "${HOME}/.config/bspwm/config/eww" "$@"

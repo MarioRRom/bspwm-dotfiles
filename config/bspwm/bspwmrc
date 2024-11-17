@@ -28,7 +28,7 @@ export XDG_CURRENT_DESKTOP='bspwm'
 export _JAVA_AWT_WM_NONREPARENTING=1
 export LC_TIME="en_US.UTF-8"
 BSPDIR="$HOME/.config/bspwm"
-PATH="$BSPDIR/scripts:$PATH"
+PATH="$BSPDIR/config/scripts:$PATH"
 
 
 #  .-------------------------.
@@ -131,20 +131,20 @@ done
 
 
 ## Lanzar el gestor de atajos de Teclado
-sxhkd -c "$BSPDIR"/keys &
+sxhkd -c "$BSPDIR"/config/keys &
 
 
 ## Lanzar el Compositor picom
-picom --config "$BSPDIR"/picom.conf & 
+picom --config "$BSPDIR"/config/picom.conf & 
 
 
 ## Lanzar polybar en cada monitor
 if type "xrandr"; then
     for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
-        MONITOR=$m polybar --reload -c "$BSPDIR"/polybar/top_bar.ini &
+        MONITOR=$m polybar --reload -c "$BSPDIR"/config/rpolybar/top_bar.ini &
     done
 else
-    polybar --reload -c "$BSPDIR"/polybar/top_bar.ini &
+    polybar --reload -c "$BSPDIR"/config/polybar/top_bar.ini &
 fi
 
 
@@ -153,7 +153,7 @@ Eww daemon &
 
 
 ## Lanzar dunst para las notificaciones
-dunst -config "$BSPDIR"/notifications &
+dunst -config "$BSPDIR"/config/notificaciones &
 
 
 ## Iniciar Polkit
@@ -165,7 +165,7 @@ xrdb -merge "$HOME"/.Xresources &
 
 
 #Xsettingsd
-xsettingsd --config="$BSPDIR"/xsettingsd &
+xsettingsd --config="$BSPDIR"/config/xsettingsd &
 
 # Lanzar los programas comprendidos en  ~/.config/autostart/
 Autostart &

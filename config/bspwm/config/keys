@@ -58,7 +58,11 @@ super + Return
 
 # program launcher
 super + d
-	rofi -show drun -theme ~/.config/bspwm/rofi.rasi
+	rofi -show drun -theme ~/.config/bspwm/config/rofi/launcher.rasi
+
+# program launcher
+super + Tab
+	rofi -show window -theme ~/.config/bspwm/config/rofi/window.rasi
 
 # Explorador de Archivos
 super + shift + e

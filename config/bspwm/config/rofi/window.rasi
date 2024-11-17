@@ -1,0 +1,162 @@
+//===========================================================================
+//
+//
+//███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+//████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+//██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+//██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+//██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//                          MarioRRom's Dotfiles
+//                 https://github.com/MarioRRom/bspwm-dotfiles
+//===========================================================================
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |Configuración Global| |
+//  | `--------------------' |
+//  `------------------------'
+
+configuration {
+    font:           				"Sofia Pro Medium 10";
+    show-icons:                     true;
+	icon-theme: 					"Papirus-Dark";
+    display-drun: 					"";
+    drun-display-format:            "{icon} {name}";
+    disable-history:                false;
+	sidebar-mode: 					false;
+	click-to-exit: 					true;
+}
+
+* {
+    BG:                             #181825;
+    BGA:                            #313244;
+    FG:                             #cdd6f4;
+    SKY:                            #89dceb;
+    UGT:                            #f38ba8;
+}
+
+window {
+    transparency:                   "real";
+    background-color:               @BG;
+    text-color:                     @FG;
+    border-radius:                  12px;
+    border:                         2px;
+    border-color:                   @SKY;
+    width:                          750px;
+    x-offset:                       0px;
+    y-offset:                       0px;
+    location:                       center;
+}
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |   Box Principal    | |
+//  | `--------------------' |
+//  `------------------------'
+
+mainbox {
+    background-color:               @BG;
+    children:                       [ listview ];
+    spacing:                        15px;
+    padding:                        20px;
+}
+
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |      ListView      | |
+//  | `--------------------' |
+//  `------------------------'
+
+listview {
+    background-color:               #00000000;
+    columns:                        3;
+    lines:							4;
+    spacing:                        5px;
+    cycle:                          true;
+    dynamic:                        true;
+    layout:                         vertical;
+    fixed-height:                   true;
+    fixed-columns:                  true;
+    cursor:                         pointer;
+}
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |     Elementos      | |
+//  | `--------------------' |
+//  `------------------------'
+
+element {
+    background-color:               #00000000;
+    text-color:                     @FG;
+    orientation:                    vertical;
+    border-radius:                  8px;
+    padding:                        20px;
+}
+
+element-icon {
+    background-color: 				inherit;
+    text-color:       				inherit;
+    horizontal-align:               0.5;
+    vertical-align:                 0.5;
+    size:                           48px;
+}
+
+element-text {
+    background-color: 				inherit;
+    text-color:       				inherit;
+    expand:                         true;
+    horizontal-align:               0.5;
+    vertical-align:                 0.5;
+}
+
+element normal.urgent,
+element alternate.urgent {
+    background-color:               @UGT;
+    text-color:                     @FG;
+    border-radius:                  8px;
+}
+
+element normal.active,
+element alternate.active {
+    background-color:               @BGA;
+    text-color:                     @FG;
+}
+
+element selected {
+    background-color:               @SKY;
+    text-color:                     #000000;
+    border-radius:                  8px;
+}
+
+element selected.urgent {
+    background-color:               @UGT;
+    text-color:                     @FG;
+}
+
+element selected.active {
+    background-color:               @SKY;
+    color:                          #000000;
+}
+
+error-message {
+    padding:                     15px;
+    border:                      2px solid;
+    border-radius:               12px;
+    background-color:            @BG;
+    text-color:                  @FG;
+}
+
+textbox {
+    background-color:            @BG;
+    text-color:                  @FG;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+    highlight:                   none;
+}

@@ -76,11 +76,11 @@ El esquema de colores que utilizo en mi entorno, así como en el resto de las ap
 
 ---
 
-> [!Advertencia]
+> [!CAUTION]
 > Mis Dotfiles fueron diseñados para una resolución de **1920x1080**
 > Si utilizas resoluciones demaciado bajas es probable que la escala de los widgets sea demaciado grande.
 
-> [!importante]
+> [!important]
 > Si estas usando una maquina virtual, asegurate de cambiar el backend de picom de **glx** a **xrender** antes de iniciar el entorno.
 > La configuracion esta en `.config/bspwm/config/picom/picom.conf`
 

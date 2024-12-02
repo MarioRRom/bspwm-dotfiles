@@ -22,15 +22,18 @@
 (defpoll HORA :interval "5s" 'LC_TIME="en_US.UTF-8" date "+%I:%M %p"')
 (defpoll DIA :interval "5s" 'LC_TIME="es_AR.UTF-8" date +\"%A\"')
 
+;; Obtener Notificaciones
+(defpoll LISTA-NOTIFICACIONES :interval "1s" "centerpanel/notifications.sh")
+
 ;; Obtener el Clima
-(defpoll WHICON :interval "30s" 'cat ~/.cache/weather/icono')
-(defpoll WHTEMP :interval "30s" 'cat ~/.cache/weather/temp')
-(defpoll WHDESC :interval "30s" 'cat ~/.cache/weather/descripcion')
-(defpoll WHUBI :interval "30s" 'cat ~/.cache/weather/ubicacion')
-(defpoll WHVIEN :interval "30s" 'cat ~/.cache/weather/viento')
-(defpoll WHHUM :interval "30s" 'cat ~/.cache/weather/humedad')
-(defpoll WHCOLOR :interval "30s" :initial "white" 'cat ~/.cache/weather/color')
-(defpoll WHBG :interval "30s" :initial "black" 'cat ~/.cache/weather/bg')
+(defpoll WHICON :interval "30s" 'cat ~/.cache/mariorrom-dotfiles/weather/icono')
+(defpoll WHTEMP :interval "30s" 'cat ~/.cache/mariorrom-dotfiles/weather/temp')
+(defpoll WHDESC :interval "30s" 'cat ~/.cache/mariorrom-dotfiles/weather/descripcion')
+(defpoll WHUBI :interval "30s" 'cat ~/.cache/mariorrom-dotfiles/weather/ubicacion')
+(defpoll WHVIEN :interval "30s" 'cat ~/.cache/mariorrom-dotfiles/weather/viento')
+(defpoll WHHUM :interval "30s" 'cat ~/.cache/mariorrom-dotfiles/weather/humedad')
+(defpoll WHCOLOR :interval "30s" :initial "white" 'cat ~/.cache/mariorrom-dotfiles/weather/color')
+(defpoll WHBG :interval "30s" :initial "black" 'cat ~/.cache/mariorrom-dotfiles/weather/bg')
 
 
 
@@ -45,13 +48,43 @@
         :orientation "h"
         :spacing 15
         
-        ;; Notificaciones
+        ;;  .------------------------.
+        ;;  | .--------------------. |
+        ;;  | |   Notificaciones   | |
+        ;;  | `--------------------' |
+        ;;  `------------------------'
         (box
-            :class "notificaciones"
-            (label :text "Notificaciones Proximamente")
+            :orientation "v"
+            :space-evenly false
+            :spacing 4
+
+            ;; Box que contiene las notificaciones
+            (box
+                :class "box-notificaciones"
+                :orientation "v"
+                (overlay
+                    ;; literal que carga el script notifications.sh
+                    (literal :content LISTA-NOTIFICACIONES :halign "center" :valign "center")
+
+                    ;; boton para eliminar notificaciones
+                    (eventbox
+                        :class "limpiar-boton"
+                        :valign "end"
+                        :halign "end"
+                        :cursor "pointer"
+                        :tooltip "Limpiar Notificaciones"
+                        :onclick "dunstctl history-clear"
+                        (label :class "texto" :text "Limpiar")
+                    )
+                )
+            )
         )
 
-        ;; Bloque Derecho
+        ;;  .------------------------.
+        ;;  | .--------------------. |
+        ;;  | |   Bloque Derecho   | |
+        ;;  | `--------------------' |
+        ;;  `------------------------'
         (box
             :orientation "v"
             :space-evenly false
@@ -97,6 +130,38 @@
         )
     )
 )
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |  Tarjeta de Notif  | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+(defwidget notificacion-card [?contenido ?titulo ?imagen ?app]
+    (box
+        :class "notificacion-card"
+        :space-evenly false
+        :orientation "h"
+        (box :class "icono" :style "background-image: url(\"${imagen}\");")
+        (box
+            :orientation "v"
+            :space-evenly false
+            :spacing 3
+            (label :class "app" :text app :halign "start")
+            (label :class "titulo" :text titulo :halign "start")
+            (label :class "contenido" :text contenido :halign "start")
+
+        )
+    )
+)
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |      Ventana       | |
+;;  | `--------------------' |
+;;  `------------------------'
 
 (defwindow centerpanel
     :stacking "bg"

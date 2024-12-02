@@ -24,15 +24,17 @@
 (defpoll MODOAVION :interval "5s" "nmcli radio wifi")
 
 ;; No Molestar
-(defpoll NOMOLESTAR :interval "3s" "dunstctl is-paused")
+(defpoll NOMOLESTAR :interval "20s" "dunstctl is-paused")
 
 ;; Luz Nocturna
-(defpoll LUZNOCTURNA :interval "3s" "LuzNocturna --status")
+(defpoll LUZNOCTURNA :interval "20s" "LuzNocturna --status")
 
 ;; Barras de control
-(defpoll GETVOLUME :interval "10s" :initial "50" "Volume --get")
-(defpoll GETMICRO :interval "10s" :initial "50" "Microphone --get")
-(defpoll GETBRIGHT :interval "10s" :initial "50" "Brightness --get")
+(defpoll GETVOLUME :interval "20s" :initial "50" "Volume --get")
+(defpoll GETICONVOLUME :interval "1s" :initial "󰕾" "Volume --icon")
+(defpoll GETMICRO :interval "20s" :initial "50" "Microphone --get")
+(defpoll GETBRIGHT :interval "20s" :initial "50" "Brightness --get")
+(defpoll GETICONBRIGHT :interval "20s" :initial "50" "Brightness --icon")
 
 
 ;;  .------------------------.
@@ -94,7 +96,7 @@
             ;; Luz Nocturna
             (eventbox
                 :class { LUZNOCTURNA == "apagado" ? "ccpanelbtn" : "ccpanelbtnon" }
-                :onclick "LuzNocturna"
+                :onclick "LuzNocturna && Eww update LUZNOCTURNA=$(LuzNocturna --status)"
                 (box
                     :space-evenly false
                     (label :class "ccicon" :text "󱩌")
@@ -109,7 +111,7 @@
             :spacing 10
             (eventbox
                 :class { NOMOLESTAR == "false" ? "ccpanelsqbtn" : "ccpanelsqbtnon" }
-                :onclick "dunstctl set-paused toggle"
+                :onclick "dunstctl set-paused toggle && Eww update NOMOLESTAR=$(dunstctl is-paused)"
                 (box
                     :halign "center"
                     :tooltip "Activar el modo No Molestar"
@@ -148,7 +150,7 @@
             :halign "center"
             :spacing 10
             :space-evenly false
-            (label :class "volumeicon" :text "")
+            (label :class "volumeicon" :text GETICONVOLUME)
             (scale
             :min "0"
             :max "101"
@@ -182,7 +184,7 @@
             :halign "center"
             :spacing 10
             :space-evenly false
-            (label :class "brighticon" :text "󰃠")
+            (label :class "brighticon" :text GETICONBRIGHT)
             (scale
             :min "0"
             :max "100"
@@ -194,6 +196,12 @@
     )
 )
 
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |      Ventana       | |
+;;  | `--------------------' |
+;;  `------------------------'
 
 (defwindow controlcenter
     :stacking "bg"

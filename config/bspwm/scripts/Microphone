@@ -12,18 +12,22 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
-# Iconos y colores
-iDIR="$HOME/.config/bspwm/assets"
-notify_cmd='dunstify -u low -h string:x-dunst-stack-tag:obvolume'
+##  ESTE SCRIPT GESTIONA EL VOLUMEN DE TU MICRO DE MANERA INTEGRADA CON   ##
+##    TODOS LOS WIDGETS DE LOS DOTFILES, PERMITIENDO SER MAS EFICIENTE    ##
 
-# Obtener el volumen
-get_volume() {
-    pactl get-sink-volume @DEFAULT_SINK@ | grep -oP "\d+%" | head -1 | tr -d '%'
+# Obtener el índice del dispositivo de entrada (micrófono)
+get_mic_index() {
+    pactl list sources short | grep -i input | awk '{print $1}'
 }
 
-# Generar barra de volumen
-get_volume_bar() {
-    volume=$(get_volume)
+# Obtener el volumen actual del micrófono
+get_mic_volume() {
+    pactl list sources | grep -A 15 "Source #$(get_mic_index)" | grep "Volume:" | head -n1 | awk '{print $5}' | tr -d '%'
+}
+
+# Generar barra de volumen del micrófono
+get_mic_volume_bar() {
+    volume=$(get_mic_volume)
     filled=$((volume / 10))
     empty=$((10 - filled))
 
@@ -38,72 +42,38 @@ get_volume_bar() {
     echo "$bar"
 }
 
-# Icono
-get_icon() {
-    current=$(get_volume)
-    if pactl get-sink-mute @DEFAULT_SINK@ | grep -qE 'yes|sí'; then
-        icon="$iDIR/volume-muted.svg"
-    elif [ "$current" -eq 0 ]; then
-        icon="$iDIR/volume-muted.svg"
-    else
-        icon="$iDIR/volume.svg"
-    fi
-}
-
-# Notificar al usuario
+# Notificar al usuario (opcional)
 notify_user() {
-    get_icon
-    ${notify_cmd} -i "$icon" "$(get_volume_bar)"
-    aplay ~/.config/bspwm/assets/pop.wav
+    ${notify_cmd} -i "$icon" "$(get_mic_volume_bar)"
 }
 
-# Aumentar el volumen
-inc_volume() {
-    pactl set-sink-mute @DEFAULT_SINK@ 0
-    current_volume=$(get_volume)
-    if [ "$current_volume" -lt 100 ]; then
-        pactl set-sink-volume @DEFAULT_SINK@ +5% && notify_user
-    else
-        notify_user
-    fi
+# Aumentar el volumen del micrófono
+inc_mic_volume() {
+    pactl set-source-volume "$(get_mic_index)" +10% && notify_user
 }
 
-# Disminuir el volumen
-dec_volume() {
-    pactl set-sink-mute @DEFAULT_SINK@ 0
-    pactl set-sink-volume @DEFAULT_SINK@ -5% && notify_user
+# Disminuir el volumen del micrófono
+dec_mic_volume() {
+    pactl set-source-volume "$(get_mic_index)" -10% && notify_user
 }
 
-# Establecer el volumen
-set_volume() {
-    volume=$1
-    if [ "$volume" -ge 0 ] && [ "$volume" -le 100 ]; then
-        pactl set-sink-volume @DEFAULT_SINK@ "${volume}%"
-    else
-        ${notify_cmd} "Valor fuera de rango. Por favor, elige un valor entre 0 y 100."
-    fi
-}
-
-# Silenciar
-toggle_mute() {
-    pactl set-sink-mute @DEFAULT_SINK@ toggle
-    notify_user
+# Ajustar el volumen del micrófono a un valor específico
+set_mic_volume() {
+    pactl set-source-volume "$(get_mic_index)" "$1%" && notify_user
 }
 
 # Ejecutar
 if [ -x $(which pactl) ]; then
     if [[ "$1" == "--get" ]]; then
-        get_volume
+        get_mic_volume
     elif [[ "$1" == "--aum" ]]; then
-        inc_volume
+        inc_mic_volume
     elif [[ "$1" == "--baj" ]]; then
-        dec_volume
-    elif [[ "$1" == "--set" ]]; then
-        set_volume "$2"
-    elif [[ "$1" == "--muteo" ]]; then
-        toggle_mute
+        dec_mic_volume
+    elif [[ "$1" == "--set" && -n "$2" ]]; then
+        set_mic_volume "$2"
     else
-        echo "$(get_volume_bar)"
+        echo "$(get_mic_volume_bar)"
     fi
 else
     ${notify_cmd} "'pactl' no está instalado."

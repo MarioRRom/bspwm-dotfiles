@@ -12,79 +12,44 @@
 #                 https://github.com/MarioRRom/bspwm-dotfiles
 #===========================================================================
 
-# Iconos y colores
-iDIR="$HOME/.config/bspwm/assets"
-notify_cmd='dunstify -u low -h string:x-dunst-stack-tag:obbrightness'
-icon="$iDIR/brightness.svg"
+##   Este script activa y desactiva la luz nocturna   ##
+## util para varios usuarios que usan el pc por horas ##
 
-# Obtener el brillo actual
-get_brightness() {
-    brightnessctl get
-}
+CACHE_DIR="$HOME/.cache/mariorrom-dotfiles/"
+# Verificar si la carpeta existe y crearla si no
+[ ! -d "$CACHE_DIR" ] && mkdir -p "$CACHE_DIR"
 
-# Obtener el brillo máximo
-get_max_brightness() {
-    brightnessctl max
-}
+STATUS_FILE="$CACHE_DIR/luz_nocturna.status"
 
-# Calcular porcentaje de brillo
-get_brightness_percentage() {
-    current=$(get_brightness)
-    max=$(get_max_brightness)
-    echo $((current * 100 / max))
-}
 
-# Generar barra de brillo
-get_brightness_bar() {
-    brightness=$(get_brightness_percentage)
-    filled=$((brightness / 10))
-    empty=$((10 - filled))
+# Verificar si Redshift está instalado
+if ! command -v redshift &> /dev/null; then
+    notify-send "Redshift no está instalado" "Por favor, instala Redshift para usar la luz nocturna."
+    exit 1
+fi
 
-    bar=""
-    for i in $(seq 1 $filled); do
-        bar="${bar}━"
-    done
-    for i in $(seq 1 $empty); do
-        bar="${bar}─"
-    done
-
-    echo "$bar"
-}
-
-# Notificar al usuario
-notify_user() {
-    ${notify_cmd} -i "$icon" "$(get_brightness_bar)"
-    aplay ~/.config/bspwm/assets/pop.wav
-}
-
-# Aumentar el brillo
-inc_brightness() {
-    brightnessctl set +10% && notify_user
-}
-
-# Disminuir el brillo
-dec_brightness() {
-    brightnessctl set 10%- && notify_user
-}
-
-# Ajustar el brillo a un valor específico
-set_brightness() {
-    brightnessctl set "$1%"
-}
-
-# Ejecutar
-if [ -x $(which brightnessctl) ]; then
-    if [[ "$1" == "--get" ]]; then
-        get_brightness_percentage
-    elif [[ "$1" == "--aum" ]]; then
-        inc_brightness
-    elif [[ "$1" == "--baj" ]]; then
-        dec_brightness
-    elif [[ "$1" == "--set" && -n "$2" ]]; then
-        set_brightness "$2"
+# Función para mostrar el estado actual de Redshift
+check_status() {
+    if [[ -f $STATUS_FILE ]]; then
+        echo "encendido"
     else
-        echo "$(get_brightness_bar)"
+        echo "apagado"
     fi
+}
+
+# Comprobar los argumentos
+if [[ $1 == "--status" ]]; then
+    check_status
+    exit 0
+fi
+
+# Comprobar el estado actual de Redshift usando el archivo de estado
+if [[ -f $STATUS_FILE ]]; then
+    # Si el archivo de estado existe, desactivarlo
+    redshift -x
+    rm -f "$STATUS_FILE"  # Eliminar el archivo de estado
 else
-    ${notify_cmd} "'brightnessctl' no está instalado."
+    # Si el archivo de estado no existe, activarlo
+    redshift -O 3500 &
+    touch "$STATUS_FILE"  # Crear el archivo de estado
 fi

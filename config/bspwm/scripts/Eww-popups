@@ -1,0 +1,110 @@
+#!/bin/bash
+#===========================================================================
+#
+#
+#███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+#████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+#██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+#██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+#██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+#╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+#                          MarioRRom's Dotfiles
+#                 https://github.com/MarioRRom/bspwm-dotfiles
+#===========================================================================
+
+## ESTE ARCHIVO GESTIONA LOS POPUPS DE EWW, ABRIENDOLOS Y CERRANDOLOS EN  ##
+##  CADA CASO DESTINADO. ESTA ESPECIALMENTE DISEÑADO PARA MIS SCRIPTS DE  ##
+## MIS DOTFILES, ASI QUE REVISA config/eww/popup Y LOS SCRIPTS UTILIZADOS ##
+
+
+#  .-------------------------.
+#  | .---------------------. |
+#  | |   Anti-Duplicado    | |
+#  | `---------------------' |
+#  `-------------------------'
+
+#Proteccion anti-duplicado para que no mate tu cpu XD
+
+#Archivo de bloqueo.
+LOCKFILE="$HOME/.cache/mariorrom-dotfiles/eww-popup.lock"
+
+# Crear archivo de bloqueo
+exec 200>$LOCKFILE
+flock -n 200 || {
+    echo "Eww-popups ya está en ejecución."
+    exit 1
+}
+
+# Limpiar el archivo de bloqueo al finalizar
+cleanup() {
+    rm -f "$LOCKFILE"
+    exit 1
+}
+
+
+#  .-------------------------.
+#  | .---------------------. |
+#  | |  Popup de Volumen   | |
+#  | `---------------------' |
+#  `-------------------------'
+
+popup_volume() {
+    process_volume="Volume"
+    while true; do
+        if pgrep -x "$process_volume" > /dev/null; then
+            if ! Eww active-windows | grep -q "pop_volume"; then
+                Eww open pop_volume
+            fi
+            sleep 1
+        else
+            if Eww active-windows | grep -q "pop_volume"; then
+                Eww close pop_volume
+            fi
+            cleanup
+        fi
+    done
+}
+
+
+#  .-------------------------.
+#  | .---------------------. |
+#  | |   Popup de Brillo   | |
+#  | `---------------------' |
+#  `-------------------------'
+
+popup_brightness() {
+    process_bright="Brightness"
+    while true; do
+        if pgrep -x "$process_bright" > /dev/null; then
+            if ! Eww active-windows | grep -q "pop_brightness"; then
+                Eww open pop_brightness
+            fi
+            sleep 1
+        else
+            if Eww active-windows | grep -q "pop_brightness"; then
+                Eww close pop_brightness
+            fi
+            cleanup
+        fi
+    done
+}
+
+
+#  .-------------------------.
+#  | .---------------------. |
+#  | | Procesar Argumentos | |
+#  | `---------------------' |
+#  `-------------------------'
+
+case "$1" in
+    --volume)
+        popup_volume
+        ;;
+    --brightness)
+        popup_brightness
+        ;;
+    *)
+        echo "Uso: $0 --volume | --brightness"
+        cleanup
+        ;;
+esac

@@ -13,11 +13,15 @@
 #===========================================================================
 
 ## Este script establece el fondo de pantalla y permite tambien ##
-##        hacer un cambio random con la opcion --change         ##
+##        hacer un cambio rapido con la opcion --change         ##
 
 # Directorio de bspwm
 BSPDIR="$HOME/.config/bspwm"
-TEMP_DIR="${HOME}/.cache/"
+
+# Directorio de archivo temporal
+TEMP_DIR="${HOME}/.cache/mariorrom-dotfiles/"
+# Verificar si la carpeta existe y crearla si no
+[ ! -d "$TEMP_DIR" ] && mkdir -p "$TEMP_DIR"
 
 # Comprobar si feh está instalado
 if ! command -v feh &> /dev/null; then

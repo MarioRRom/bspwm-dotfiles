@@ -11,9 +11,36 @@
 ;;                 https://github.com/MarioRRom/bspwm-dotfiles
 ;;===========================================================================
 
-(include "powermenu/powermenu.yuck")
-(include "centerpanel/centerpanel.yuck")
-(include "controlcenter/controlcenter.yuck")
-(include "systeminfo/systeminfo.yuck")
-(include "popup/popup.yuck")
-(include "systray/systray.yuck")
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |    Widget Base     | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |      Ventana       | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+(defwindow systray
+    :stacking "bg"
+    :windowtype "dock"
+    :wm-ignore true
+    :geometry (geometry
+        :x "-125"
+        :y "58px"
+        :anchor "top right"
+        :width "0px"
+        :height "40px"
+    )
+    (systray
+        :class "systemtray"
+        :spacing 5
+        :orientation "h"
+        :space-evenly false
+        :icon-size 25
+    )
+)

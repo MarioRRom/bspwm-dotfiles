@@ -11,29 +11,117 @@
 //                 https://github.com/MarioRRom/bspwm-dotfiles
 //===========================================================================
 
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |     Principal      | |
+//  | `--------------------' |
+//  `------------------------'
+
 .centerpanel {
     background-color: $mantle;
     margin: 10px;
 }
 
-.notificaciones {
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |   Notificaciones   | |
+//  | `--------------------' |
+//  `------------------------'
+
+.box-notificaciones {
     background-color: $base;
     border-radius: 15px;
+
+    .sin-not-bell {
+        font-family: Material Icons;
+        color: $surface2;
+        font-size: 100px;
+        margin: -30px -25px -30px -30px;
+    }
+
+    .sin-not-text {
+        font-family: Sofia Pro;
+        font-size: 20px;
+        color: $surface2;
+    }
+
+    .scrollbox {
+        margin: 10px;
+    }
+
+    .limpiar-boton  {
+        background-color: $base;
+        border-radius: 12px;
+
+        .texto {
+            font-family: Sofia Pro;
+            font-size: 15px;
+            margin: 10px;
+        }
+
+        &:hover {
+            background-color: $surface0;
+        }
+
+        &:active {
+            background-color: $surface2;
+        }
+    }
 }
+
+.notificacion-card {
+    background-color: $surface0;
+    border-radius: 12px;
+    font-family: Sofia Pro;
+
+    .icono {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        min-width: 60px;
+        min-height: 60px;
+        border-radius: 10px;
+        margin: 8px 2px 8px 2px;
+    }
+
+    .app {
+        font-size: 16px;
+        font-weight: bold;
+        color: $sky;
+        margin-top: 10px;
+    }
+
+    .titulo {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .contenido {
+        font-size: 12px;
+    }
+}
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |    Fecha y Hora    | |
+//  | `--------------------' |
+//  `------------------------'
 
 .hora {
     font-family: Sofia Pro;
     font-weight: bold;
-    font-size: 50px;
-    margin-top: 20px;
+    font-size: 60px;
+    margin-top: 14px;
     text-shadow: 4px 4px 5px #000000;
 }
 
 .dia {
     font-family: Sofia Pro;
-    font-size: 25px;
-    margin-top: -6px;
-    margin-bottom: 5px;
+    font-size: 35px;
+    margin-top: -10px;
     color: $green;
     text-shadow: 4px 4px 5px #000000;
 }
@@ -77,9 +165,15 @@
     }
 }
 
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |       Clima        | |
+//  | `--------------------' |
+//  `------------------------'
 .climabox {
     background-color: $base;
-    padding: 0px 0px 0px 15px;
+    padding: 6px 0px 6px 18px;
     border-radius: 15px;
     box-shadow: inset 5px -5px 10px $base;
 

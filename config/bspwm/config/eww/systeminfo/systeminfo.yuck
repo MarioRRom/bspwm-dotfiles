@@ -19,10 +19,10 @@
 ;;  `------------------------'
 
 ;; Profile Card
-(defpoll USERNAME :interval "5s" "whoami")
-(defpoll OSNAME :interval "5s" "grep '^PRETTY_NAME' /etc/os-release | cut -d '=' -f2")
+(defpoll USERNAME :interval "1h" "whoami")
+(defpoll OSNAME :interval "1h" "cat /etc/os-release | awk 'NR==1'| awk -F '\"' '{print $2}'")
 (defpoll UPTIME :interval "5s" "uptime -p")
-(defvar profileimg "~/.face")
+(defpoll profileimg :interval "1h" "echo /var/lib/AccountsService/icons/$(whoami)")
 
 ;; Graficos
 (defpoll CPUPER :interval "1s" "top -bn1 | grep 'Cpu(s)' | awk '{print $2 + $4}'")
@@ -46,13 +46,13 @@
             :orientation "h"
             :space-evenly false
             :class "profilecard"
-            (image :class "profilepng" :path profileimg :style "border-radius: 60px" :image-width 80 :image-height 80)
+            (box :class "profilepng" :style "background-image: url(\"${profileimg}\");")
             (box
                 :class "profiletext"
                 :orientation "v"
                 :halign "center"
                 :valign "center"
-                :spacing 2
+                :spacing 3
                 
                 :space-evenly false         
                 (label :class "name" :text USERNAME)

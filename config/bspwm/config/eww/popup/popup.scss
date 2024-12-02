@@ -1,0 +1,126 @@
+//===========================================================================
+//
+//
+//███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+//████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+//██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+//██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+//██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+//╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+//                          MarioRRom's Dotfiles
+//                 https://github.com/MarioRRom/bspwm-dotfiles
+//===========================================================================
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |      Volumen       | |
+//  | `--------------------' |
+//  `------------------------'
+
+.pop_volume {
+    font-family: Sofia Pro;
+    font-size: 14px;
+    background-color: $mantle;
+    margin: 10px;
+    text-shadow: 4px 4px 5px #000000;
+
+    .volume-icon {
+        font-size: 40px;
+        font-family: Material Icons;
+        color: $green;
+        padding: 4px 16px 0px 3px;
+    }
+
+    .volume-icon-muted {
+        font-size: 40px;
+        font-family: Material Icons;
+        color: $red;
+        padding: 4px 16px 0px 3px;
+    }
+
+    .volume-bar {
+        border-radius: 20px;
+        margin-top: 6px;
+
+        scale {
+            trough {
+                background: $overlay0;
+                min-height: 19px;
+                min-width: 200px;
+                border-radius: 20px;
+                border: 2px solid $surface0;
+            }
+    
+            highlight {
+                background: linear-gradient(to right, $green, $teal);
+                border-radius: inherit;
+                min-width: 20px;
+            }
+        }
+    }
+
+    .volume-bar-muted {
+        border-radius: 20px;
+        margin-top: 6px;
+
+        scale {
+            trough {
+                background: $overlay0;
+                min-height: 19px;
+                min-width: 200px;
+                border-radius: 20px;
+                border: 2px solid $surface0;
+            }
+    
+            highlight {
+                background: linear-gradient(to right, $red, $maroon);
+                border-radius: inherit;
+                min-width: 20px;
+            }
+        }
+    }
+}
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |      Brillo        | |
+//  | `--------------------' |
+//  `------------------------'
+
+.pop_brightness {
+    font-family: Sofia Pro;
+    font-size: 14px;
+    background-color: $mantle;
+    margin: 10px;
+    text-shadow: 4px 4px 5px #000000;
+
+    .brightness-icon {
+        font-size: 34px;
+        font-family: Material Icons;
+        color: $peach;
+        padding: 4px 20px 0px 0px;
+    }
+
+    .brightness-bar {
+        border-radius: 20px;
+        margin-top: 6px;
+
+        scale {
+            trough {
+                background: $overlay0;
+                min-height: 19px;
+                min-width: 200px;
+                border-radius: 20px;
+                border: 2px solid $surface0;
+            }
+    
+            highlight {
+                background: linear-gradient(to right, $peach, $yellow);
+                border-radius: inherit;
+                min-width: 20px;
+            }
+        }
+    }
+}

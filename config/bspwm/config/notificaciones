@@ -33,7 +33,7 @@ follow = mouse
 width = (200, 444)
 height = 300
 origin = top-center
-offset = 0x55
+offset = 0x70
 scale = 0
 notification_limit = 0
 
@@ -63,8 +63,8 @@ separator_height = 1
 padding = 15
 horizontal_padding = 15
 text_icon_padding = 0
-frame_width = 2
-frame_color = "#89dceb"
+frame_width = 3
+frame_color = "#181825"
 separator_color = "#89dceb"
 sort = yes
 
@@ -143,19 +143,19 @@ mouse_right_click = close_all
 
 [urgency_low]
 timeout = 3
-background = "#181825"
+background = "#1e1e2e"
 foreground = "#cdd6f4"
 highlight  = "#89dceb"
 
 [urgency_normal]
 timeout = 6
-background = "#181825"
+background = "#1e1e2e"
 foreground = "#cdd6f4"
 highlight  = "#89dceb"
 script = "~/.config/bspwm/assets/notification.sh"
 
 [urgency_critical]
 timeout = 0
-background = "#181825"
+background = "#1e1e2e"
 foreground = "#f38ba8"
 script = "~/.config/bspwm/assets/notification.sh"

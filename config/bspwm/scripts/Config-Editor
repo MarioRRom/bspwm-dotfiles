@@ -1,0 +1,80 @@
+#!/bin/bash
+#===========================================================================
+#
+#
+#███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+#████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+#██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+#██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+#██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+#╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+#                          MarioRRom's Dotfiles
+#                 https://github.com/MarioRRom/bspwm-dotfiles
+#===========================================================================
+
+## Este Script es para Gestionar la configuracion el entorno ##
+##    A traves de variables para una facil configuracion     ##
+
+BSPDIR="$HOME/.config/bspwm"
+CONFIG_FILE="$BSPDIR/configvars.cfg"
+
+# Función para leer el valor de una variable en el archivo de configuración
+leer_variable() {
+    clave=$1
+    # Comprobar si la variable existe en el archivo
+    if grep -q "^${clave}=" "$CONFIG_FILE"; then
+        valor=$(grep "^${clave}=" "$CONFIG_FILE" | cut -d '=' -f2 | tr -d '"')
+        echo "$valor"
+    else
+        # Si no existe, mostrar un aviso
+        echo "Advertencia: La variable ${clave} no existe en el archivo de configuración."
+    fi
+}
+
+# Función para modificar el valor de una variable en el archivo de configuración
+modificar_variable() {
+    clave=$1
+    nuevo_valor=$2
+
+    # Verificar si la clave existe en el archivo
+    if grep -q "^${clave}=" "$CONFIG_FILE"; then
+        # Si la clave existe, reemplazarla
+        sed -i "s/^${clave}=.*/${clave}=${nuevo_valor}/" "$CONFIG_FILE"
+        echo "Variable ${clave} actualizada a ${nuevo_valor}"
+    else
+        # Si la clave no existe, dar un aviso
+        echo "Advertencia: La variable ${clave} no existe en el archivo de configuración. No se realizarán cambios."
+    fi
+}
+
+# Función para listar todas las variables del archivo de configuración
+listar_variables() {
+    echo "Variables en el archivo de configuración:"
+    grep "^.*=" "$CONFIG_FILE" | cut -d '=' -f1
+}
+
+# Parsear argumentos de línea de comandos
+if [[ $1 == "--leer" ]]; then
+    clave=$2
+    if [[ -z "$clave" ]]; then
+        echo "Error: Debe proporcionar una variable para leer."
+        exit 1
+    fi
+    leer_variable "$clave"
+
+elif [[ $1 == "--editar" ]]; then
+    clave=$2
+    nuevo_valor=$3
+    if [[ -z "$clave" || -z "$nuevo_valor" ]]; then
+        echo "Error: Debe proporcionar una variable y un nuevo valor para editar."
+        exit 1
+    fi
+    modificar_variable "$clave" "$nuevo_valor"
+
+elif [[ $1 == "--lista" ]]; then
+    listar_variables
+
+else
+    echo "Uso: Config-Editor --leer <variable> | --editar <variable> <nuevo_valor> | --lista"
+    exit 1
+fi

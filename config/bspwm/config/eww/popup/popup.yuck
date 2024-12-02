@@ -1,0 +1,105 @@
+;;===========================================================================
+;;
+;;
+;;███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+;;████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+;;██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+;;██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+;;██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+;;╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+;;                          MarioRRom's Dotfiles
+;;                 https://github.com/MarioRRom/bspwm-dotfiles
+;;===========================================================================
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |     Variables      | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+;; Variables ya importadas en controlcenter.yuck
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |      Volumen       | |
+;;  | `--------------------' |
+;;  `------------------------'
+(defwidget pop_volume []
+    (box
+        :orientation "h"
+        :space-evenly false
+        :halign "center"
+        (label :class { GETICONVOLUME == "󰖁" ? "volume-icon-muted" : "volume-icon" } :text GETICONVOLUME)
+        (box
+            :class { GETICONVOLUME == "󰖁" ? "volume-bar-muted" : "volume-bar" }
+            (scale
+                :min "0"
+                :max "101"
+                :value GETVOLUME
+                :orientation "horizontal"
+                :onchange "Volume --set {}"
+            )
+        )
+    )
+)
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |       Brillo       | |
+;;  | `--------------------' |
+;;  `------------------------'
+(defwidget pop_brightness []
+    (box
+        :orientation "h"
+        :space-evenly false
+        :halign "center"
+        (label :class "brightness-icon" :text GETICONBRIGHT)
+        (box
+            :class "brightness-bar"
+            (scale
+                :min "0"
+                :max "101"
+                :value GETBRIGHT
+                :orientation "horizontal"
+                :onchange "Brightness --set {}"
+            )
+        )
+    )
+)
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |      Ventanas      | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+(defwindow pop_volume
+    :stacking "fg"
+    :windowtype "dock"
+    :wm-ignore false
+    :geometry (geometry
+        :x "0"
+        :y "-30px"
+        :anchor "bottom center"
+        :width "270px"
+        :height "70px"
+    )
+    (pop_volume)
+)
+
+(defwindow pop_brightness
+    :stacking "fg"
+    :windowtype "dock"
+    :wm-ignore false
+    :geometry (geometry
+        :x "0"
+        :y "-30px"
+        :anchor "bottom center"
+        :width "270px"
+        :height "70px"
+    )
+    (pop_brightness)
+)

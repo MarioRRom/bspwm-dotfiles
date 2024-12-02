@@ -11,20 +11,36 @@
 //                 https://github.com/MarioRRom/bspwm-dotfiles
 //===========================================================================
 
-* {
-    all: unset;
+
+.systray {
+    background-color: $mantle;
+    margin: 10px;
 }
 
-tooltip {
-    background-color: #1e1e2e;
-    font-size: 13px;
-    font-weight: bold;
-}
+.systemtray menu {
+    padding: 5px 5px;
+    background-color: $mantle;
 
-@import "colors-mocha.scss";
-@import "powermenu/powermenu.scss";
-@import "centerpanel/centerpanel.scss";
-@import "controlcenter/controlcenter.scss";
-@import "systeminfo/systeminfo.scss";
-@import "popup/popup.scss";
-@import "systray/systray.scss";
+    >menuitem {
+        background-color: $base;
+        border-radius: 10px;
+        font-family: Sofia Pro;
+        font-size: 15px;
+        margin: 5px 5px;
+        padding: 5px 5px;
+        color: $text;
+
+        &:disabled label {
+            color: $overlay0;
+        }
+
+        &:hover {
+            color: $sky;
+        }
+    }
+
+    separator {
+        background-color: $surface0;
+        padding-top: 1px;
+    }
+}

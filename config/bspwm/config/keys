@@ -76,9 +76,9 @@ super + shift + f
 super + Escape
 	pkill -USR1 -x sxhkd
 
-# Screenshot de Área
+# Screenshot
 alt + Print
-	gnome-screenshot -a -c -f "screenshots/captura-$(date +%Y-%m-%d_%H-%M-%S).png"
+	flameshot gui
 
 # Volume control
 XF86Audio{RaiseVolume,LowerVolume,Mute}

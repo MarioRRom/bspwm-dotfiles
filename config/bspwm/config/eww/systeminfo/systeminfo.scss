@@ -20,8 +20,14 @@
 .profilecard {
     background: $base;
     border-radius: 10px;
+    
     .profilepng {
         margin: 10px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        min-width: 80px;
+        border-radius: 20px;
     }
 
     .profiletext {

@@ -1,0 +1,107 @@
+#!/bin/bash
+#===========================================================================
+#
+#
+#███╗   ███╗ █████╗ ██████╗ ██╗ ██████╗ ██████╗ ██████╗  ██████╗ ███╗   ███╗
+#████╗ ████║██╔══██╗██╔══██╗██║██╔═══██╗██╔══██╗██╔══██╗██╔═══██╗████╗ ████║
+#██╔████╔██║███████║██████╔╝██║██║   ██║██████╔╝██████╔╝██║   ██║██╔████╔██║
+#██║╚██╔╝██║██╔══██║██╔══██╗██║██║   ██║██╔══██╗██╔══██╗██║   ██║██║╚██╔╝██║
+#██║ ╚═╝ ██║██║  ██║██║  ██║██║╚██████╔╝██║  ██║██║  ██║╚██████╔╝██║ ╚═╝ ██║
+#╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═╝     ╚═╝                                                                          
+#                          MarioRRom's Dotfiles
+#                 https://github.com/MarioRRom/bspwm-dotfiles
+#===========================================================================
+
+##    ESTE SCRIPT GESTIONA EL VOLUMEN DE TU PC DE MANERA INTEGRADA CON    ##
+##    TODOS LOS WIDGETS DE LOS DOTFILES, PERMITIENDO SER MAS EFICIENTE    ##
+
+# Obtener el volumen
+get_volume() {
+    pactl get-sink-volume @DEFAULT_SINK@ | grep -oP "\d+%" | head -1 | tr -d '%'
+}
+
+# Determinar el icono
+get_icon() {
+    current=$(get_volume)
+    if pactl get-sink-mute @DEFAULT_SINK@ | grep -qE 'yes|sí'; then
+        echo "󰖁"
+    elif [ "$current" -eq 0 ]; then
+        echo "󰝟"
+    elif [ "$current" -le 25 ]; then
+        echo "󰕿"
+    elif [ "$current" -le 50 ]; then
+        echo "󰖀"
+    elif [ "$current" -le 75 ]; then
+        echo "󰕾"
+    else
+        echo "󰕾"
+    fi
+}
+
+# Actualizar Eww
+update_eww() {
+    Eww update GETVOLUME=$(get_volume)
+    Eww update GETICONVOLUME=$(get_icon)
+}
+
+# Aumentar el volumen
+inc_volume() {
+    pactl set-sink-mute @DEFAULT_SINK@ 0
+    current_volume=$(get_volume)
+    if [ "$current_volume" -lt 100 ]; then
+        pactl set-sink-volume @DEFAULT_SINK@ +5% && update_eww
+        Eww-popups --volume &
+    else
+        update_eww
+        Eww-popups --volume &
+    fi
+}
+
+# Disminuir el volumen
+dec_volume() {
+    pactl set-sink-mute @DEFAULT_SINK@ 0
+    pactl set-sink-volume @DEFAULT_SINK@ -5% && update_eww
+    Eww-popups --volume &
+}
+
+# Establecer el volumen
+set_volume() {
+    volume=$1
+    if [ "$volume" -ge 0 ] && [ "$volume" -le 100 ]; then
+        pactl set-sink-volume @DEFAULT_SINK@ "${volume}%" && Eww update GETICONVOLUME=$(get_icon)
+    else
+        notify-send "Valor fuera de rango. Por favor, elige un valor entre 0 y 100."
+    fi
+}
+
+# Silenciar
+toggle_mute() {
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+    update_eww
+    Eww-popups --volume &
+}
+
+# Ejecutar
+if [ -x $(which pactl) ]; then
+    if [[ "$1" == "--get" ]]; then
+        get_volume
+    elif [[ "$1" == "--aum" ]]; then
+        inc_volume
+        sleep 2
+    elif [[ "$1" == "--baj" ]]; then
+        dec_volume
+        sleep 2
+    elif [[ "$1" == "--set" ]]; then
+        set_volume "$2"
+        sleep 2
+    elif [[ "$1" == "--muteo" ]]; then
+        toggle_mute
+        sleep 2
+    elif [[ "$1" == "--icon" ]]; then
+        get_icon
+    else
+        echo "Uso: --aum --baj --set --muteo --icon"
+    fi
+else
+    notify-send "'pactl' no está instalado."
+fi

@@ -18,9 +18,9 @@ $sliderswith: 280px;
     margin: 10px;
 }
 
-.ccpanelbtn {
-    background-color: $base;
-    border-radius: 50px;
+.ccrectangular-btn {
+    background-color: $surface0;
+    border-radius: 17px;
     border: inset 1px $base;
 
     .ccicon {
@@ -50,9 +50,9 @@ $sliderswith: 280px;
     }
 }
 
-.ccpanelbtnon {
+.ccrectangular-btn-on {
     background: linear-gradient( 0deg, #cba6f7, #f5c2e7);
-    border-radius: 50px;
+    border-radius: 17px;
 
     .ccicon {
         font-size: 20px;
@@ -72,12 +72,13 @@ $sliderswith: 280px;
 
     &:hover {
         background: $pink;
+        transition: 1.5s;
     }
 }
 
-.ccpanelsqbtn {
-    background-color: $base;
-    border-radius: 50px;
+.ccbutton {
+    background-color: $surface0;
+    border-radius: 17px;
     border: inset 1px $base;
 
     .ccicon {
@@ -98,6 +99,7 @@ $sliderswith: 280px;
 
     &:hover {
         background: linear-gradient(0deg, $base, $surface0);
+        transition: 1.5s;
     }
 
     &:active {
@@ -106,9 +108,9 @@ $sliderswith: 280px;
     }
 }
 
-.ccpanelsqbtnon {
+.ccbutton-on {
     background: linear-gradient( 0deg, $mauve, $pink);
-    border-radius: 30px;
+    border-radius: 17px;
 
     .ccicon {
         font-size: 40px;
@@ -128,6 +130,7 @@ $sliderswith: 280px;
 
     &:hover {
         background: $sky;
+        transition: 1.5s;
     }
 }
 

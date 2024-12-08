@@ -57,23 +57,21 @@
             :spacing 10
 
             ;; Internet
-            (eventbox
-                :class { NETNAME == "Sin Conexión" ? "ccpanelbtn" : "ccpanelbtnon" }
-                (box
-                    :space-evenly false
-                    (label :class "ccicon" :text "${NETICON}" :halign "start")
-                    (label :class "cctext" :text "${NETNAME}" :halign "center")
-                )
+            (ccrectangular-button
+                :design { NETNAME == "Sin Conexión" ? "ccrectangular-btn" : "ccrectangular-btn-on" }
+                :click "notify-send proximamente"
+                :popup "Conectado a ${NETNAME}"
+                :icono "${NETICON}"
+                :texto "${NETNAME}"
             )
 
             ;; Bluetooth
-            (eventbox
-                :class "ccpanelbtn"
-                (box
-                    :space-evenly false
-                    (label :class "ccicon" :text "󰂲" :halign "start")
-                    (label :class "cctext" :text "proximamente" :halign "center")
-                )
+            (ccrectangular-button
+                :design "ccrectangular-btn"
+                :click "notify-send proximamente"
+                :popup "Bluetooth Proximamente"
+                :icono "󰂲"
+                :texto "proximamente"
             )
         )
 
@@ -83,25 +81,21 @@
             :spacing 10
 
             ;; Modo Avion
-            (eventbox
-                :class { MODOAVION == "enabled" ? "ccpanelbtn" : "ccpanelbtnon" }
-                :onclick { MODOAVION == "enabled" ? "nmcli radio wifi off" : "nmcli radio wifi on"}
-                (box
-                    :space-evenly false
-                    (label :class "ccicon" :text { MODOAVION == "enabled" ? "󰀞" : "󰀝" })
-                    (label :class "cctext" :text "Modo Avion")
-                )
+            (ccrectangular-button
+                :design { MODOAVION == "enabled" ? "ccrectangular-btn" : "ccrectangular-btn-on" }
+                :click { MODOAVION == "enabled" ? "nmcli radio wifi off" : "nmcli radio wifi on"}
+                :popup "Modo Avion"
+                :icono { MODOAVION == "enabled" ? "󰀞" : "󰀝" }
+                :texto "Modo Avion"
             )
 
             ;; Luz Nocturna
-            (eventbox
-                :class { LUZNOCTURNA == "apagado" ? "ccpanelbtn" : "ccpanelbtnon" }
-                :onclick "LuzNocturna && Eww update LUZNOCTURNA=$(LuzNocturna --status)"
-                (box
-                    :space-evenly false
-                    (label :class "ccicon" :text "󱩌")
-                    (label :class "cctext" :text "Luz Nocturna")
-                )
+            (ccrectangular-button
+                :design { LUZNOCTURNA == "apagado" ? "ccrectangular-btn" : "ccrectangular-btn-on" }
+                :click "LuzNocturna && Eww update LUZNOCTURNA=$(LuzNocturna --status)"
+                :popup "Modo Avion"
+                :icono "󱩌"
+                :texto "Luz Nocturna"
             )
         )
 
@@ -109,37 +103,37 @@
         (box
             :orientation "h"
             :spacing 10
-            (eventbox
-                :class { NOMOLESTAR == "false" ? "ccpanelsqbtn" : "ccpanelsqbtnon" }
-                :onclick "dunstctl set-paused toggle && Eww update NOMOLESTAR=$(dunstctl is-paused)"
-                (box
-                    :halign "center"
-                    :tooltip "Activar el modo No Molestar"
-                    (label :class "ccicon" :text "󱏧")
-                )
+
+            ;; No Molestar
+            (ccnormal-button
+                :design { NOMOLESTAR == "false" ? "ccbutton" : "ccbutton-on" }
+                :click "dunstctl set-paused toggle && Eww update NOMOLESTAR=$(dunstctl is-paused)"
+                :popup "Activar el modo No Molestar"
+                :icono "󱏧"
             )
-            (eventbox
-                :class "ccpanelsqbtn"
-                :onclick "SetWallpaper --change"
-                (box
-                    :halign "center"
-                    :tooltip "Hacer un cambio rapido de Wallpaper"
-                    (label :class "ccicon" :text "")
-                )
+
+            ;; Wallpaper
+            (ccnormal-button
+                :design "ccbutton"
+                :click "SetWallpaper --change"
+                :popup "Hacer un cambio rapido de Wallpaper"
+                :icono ""
             )
-            (eventbox
-                :class "ccpanelsqbtn"
-                (box
-                    :halign "center"
-                    (label :class "ccicon" :text "x")
-                )
+
+            ;; Sin Usar
+            (ccnormal-button
+                :design "ccbutton"
+                :click "notify-send proximamente"
+                :popup "proximamente"
+                :icono "x"
             )
-            (eventbox
-                :class "ccpanelsqbtn"
-                (box
-                    :halign "center"
-                    (label :class "ccicon" :text "x")
-                )
+
+            ;; Sin Usar
+            (ccnormal-button
+                :design "ccbutton"
+                :click "notify-send proximamente"
+                :popup "proximamente"
+                :icono "x"
             )
         )
         
@@ -197,6 +191,39 @@
 )
 
 
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |   Buttons preset   | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+(defwidget ccrectangular-button [design click popup icono texto]
+    (eventbox
+        :class design
+        :cursor "pointer"
+        :onclick click
+        (box
+            :space-evenly false
+            :tooltip popup
+            (label :class "ccicon" :text icono :halign "start")
+            (label :class "cctext" :text texto :halign "center")
+            (label :class "ccicon" :text "" :halign "end")
+        )
+    )
+)
+
+(defwidget ccnormal-button [design click popup icono]
+    (eventbox
+        :class design
+        :cursor "pointer"
+        :onclick click
+        (box
+            :halign "center"
+            :tooltip popup
+            (label :class "ccicon" :text icono)
+        )
+    )
+)
 ;;  .------------------------.
 ;;  | .--------------------. |
 ;;  | |      Ventana       | |

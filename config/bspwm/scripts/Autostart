@@ -35,6 +35,14 @@ for file in ~/.config/autostart/*.desktop; do
         continue
     fi
 
+    # Obtiene el comando de ejecución desde el archivo .desktop
+    exec_command=$(grep -i "^Exec=" "$file" | cut -d'=' -f2)
+
+    # Verifica si la aplicación ya está corriendo
+    if pgrep -f "$exec_command" > /dev/null; then
+        continue
+    fi
+
     # Ejecuta los comandos asociados al archivo .desktop
     dex "$file" &
 done

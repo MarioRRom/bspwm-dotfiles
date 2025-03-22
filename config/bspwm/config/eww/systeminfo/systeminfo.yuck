@@ -28,6 +28,8 @@
 (defpoll CPUPER :interval "1s" "top -bn1 | grep 'Cpu(s)' | awk '{print $2 + $4}'")
 (defpoll RAMPER :interval "30s" "free | awk '/Mem/ {printf \"%.0f\", $3/$2 * 100.0}'")
 (defpoll DISKPER :interval "30s" "df -h / | grep '/' | awk '{print $5}' | sed 's/%//g'")
+(defpoll TEMP :interval "30s" "System-Temp")
+(defpoll TEMPVAL :interval "30s" "System-Temp --get")
 
 
 ;;  .------------------------.
@@ -142,13 +144,13 @@
                 (overlay
                     (circular-progress
                         :class "tempbar"
-                        :value {EWW_TEMPS.CORETEMP_CORE_0}
+                        :value TEMPVAL
                         :thickness 50
                         :start-at 75
                     )
                     (label :class "temptext" :text "TEMP:" :halign "start" :valign "start")
                     (label :class "tempicon" :text "")
-                    (label :class "temptext" :text "${EWW_TEMPS.CORETEMP_CORE_0}°C" :halign "end" :valign "end")
+                    (label :class "temptext" :text TEMP :halign "end" :valign "end")
                 )
             )
         ) 

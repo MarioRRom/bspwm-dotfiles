@@ -21,22 +21,51 @@ CACHE_DIR="${HOME}/.cache/mariorrom-dotfiles/"
 # Verificar si la carpeta existe y crearla si no
 [ ! -d "$CACHE_DIR" ] && mkdir -p "$CACHE_DIR"
 
-# Archivo que contendra el numeo de actualizaciones.
+# Archivo que contendra el numero de actualizaciones.
 TEMP_FILE="$CACHE_DIR/updates_count"
 
 # Función para obtener el número de actualizaciones
 get_updates() {
     local pacman_updates=$(checkupdates 2> /dev/null | wc -l)
-
-    # Guardar el número total de actualizaciones en el archivo temporal
-    echo "$pacman_updates" > "$TEMP_FILE"
+    local flatpak_updates=$(flatpak update 2> /dev/null | grep -o "^\s*[0-9]" | wc -l)
+    echo "$((pacman_updates + flatpak_updates))" > "$TEMP_FILE"
 }
 
-get_updates
+# Manejo de la actualización manual
+if [[ "$1" == "--update" ]]; then
+    alacritty -e bash -c '
+        # Limpiar el Tempfile en caso de cancelar"
+        cleanup() {
+            echo -e "\e[1;31mActualización Cancelada!\e[0m"
+            notify-send "Actualización cancelada" "Se ha cancelado la actualización del sistema." --icon="${HOME}/.config/bspwm/assets/updates.png" --app-name="Actualizaciónes"
+            echo "Presiona cualquier tecla para cerrar..."
+            read -n 1 -s
+            exit
+        }
+        trap cleanup INT TERM HUP
+        
+        # Iniciar Actualizaciones
+        echo -e "\e[1;32mIniciando actualización de Pacman\e[0m"
+        sudo pacman -Syu --noconfirm
+        clear
+        echo -e "\e[1;32mIniciando actualización de Flatpak\e[0m"
+        sleep 2
+        flatpak update -y
 
-# Bucle para ejecutar el script cada hora
+        updates_number=$(cat "'"$TEMP_FILE"'")
+        notify-send "Actualización completada" "Se actualizaron $updates_number paquetes." --icon="${HOME}/.config/bspwm/assets/updates.png" --app-name="Actualizaciónes"
+        echo -e "\nActualización de paquetes finalizada."
+        echo "Presiona cualquier tecla para cerrar..."
+        read -n 1 -s
+        rm -f "'"$TEMP_FILE"'"
+    '
+    exit
+fi
+
+# Ejecución normal del demonio
+get_updates
 while true; do
-    echo "numero de actualizaciones listo"
+    echo "Número de actualizaciones listo"
     sleep 3600  # Espera 1 hora (3600 segundos)
     get_updates
 done

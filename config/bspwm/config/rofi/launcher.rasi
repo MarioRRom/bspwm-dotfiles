@@ -19,17 +19,21 @@
 //  `------------------------'
 
 configuration {
-    font:           				"Sofia Pro Medium 10";
+    modi:                           "drun,run,filebrowser,window";
     show-icons:                     true;
 	icon-theme: 					"Papirus-Dark";
-    display-drun: 					"";
-    drun-display-format:            "{icon} {name}";
+    display-drun: 					"";
+    display-run:                    "";
+    display-filebrowser:            "";
+    display-window:                 "";
+    drun-display-format:            "{name}";
     disable-history:                false;
 	sidebar-mode: 					false;
 	click-to-exit: 					true;
 }
 
 * {
+    font:           				"Sofia Pro Medium 10";
     BG:                             #181825;
     BGA:                            #313244;
     FG:                             #cdd6f4;
@@ -43,7 +47,7 @@ window {
     text-color:                     @FG;
     border-radius:                  12px;
     border:                         0px;
-    border-color:                   @SKY;
+    border-color:                   @BGA;
     width:                          750px;
     x-offset:                       0px;
     y-offset:                       0px;
@@ -59,9 +63,9 @@ window {
 
 mainbox {
     background-color:               @BG;
+    spacing:                        0px;
+    orientation:                    vertical;
     children:                       [ inputbar, listview ];
-    spacing:                        15px;
-    padding:                        20px;
 }
 
 
@@ -72,48 +76,71 @@ mainbox {
 //  `------------------------'
 
 inputbar {
-	children: 						[ textbox-prompt-colon, entry ];
-    spacing:                        0px;
-    background-color:               @BGA;
+    spacing:                        10px;
+    padding:                        65px 45px;
+    background-color:               transparent;
+    background-image:               url("~/.config/bspwm/config/rofi/sakura.png", width);
     text-color:                     @FG;
-    expand:                         false;
-    border-radius:                  8px;
-    position:                       center;
-    border:                         0px;
-    border-color:                   @SKY;
-}
-
-prompt {
-    enabled: 						true;
-	background-color: 				@BG;
-	text-color: 					@FG;
+    orientation:                    horizontal;
+    children: 						[ textbox-prompt-colon, entry, dummy, mode-switcher ];
 }
 
 textbox-prompt-colon {
 	expand: 						false;
-	str: 							"";
+	str: 							"";
+    padding:                        9px 17px 0px 13px;
+    spacing:                        100px;
+    border-radius:                  100%;
     background-color:               @BGA;
     text-color:                     @FG;
-    padding:                        10px 0px 0px 10px;
-	font:							"Material Icons 12";
+	font:							"JetBrains Mono Nerd Font 10";
 }
 
 entry {
+    expand:                         false;
+    width:                          300px;
+    padding:                        10px 16px;
+    vertical-align:                 0.5;
+    border-radius:                  100%;
     background-color:               @BGA;
     text-color:                     @FG;
     placeholder-color:              @FG;
-    expand:                         true;
-    horizontal-align:               0;
     placeholder:                    " Buscar...";
-    font:							"Sofia Pro Bold 12";
-    blink:                          true;
-    padding:                        10px;
+    font:							"Sofia Pro Bold 10";
+    cursor:                         text;
 }
 
-case-indicator {
-    background-color:               @BG;
+dummy {
+    expand:                         true;
+    background-color:               transparent;
+}
+
+
+
+//  .------------------------.
+//  | .--------------------. |
+//  | |   Mode Switcher    | |
+//  | `--------------------' |
+//  `------------------------'
+
+mode-switcher {
+    spacing:                        10px;
+    background-color:               transparent;
+}
+
+button {
+    width:                          40px;
+    padding:                        0px;
+    border-radius:                  100%;
+    background-color:               @BGA;
     text-color:                     @FG;
-    spacing:                        0;
+    cursor:                         pointer;
+    horizontal-align:               0.45;
+}
+
+button selected {
+    background-color:               @SKY;
+    text-color:                     @BGA;
 }
 
 
@@ -124,10 +151,12 @@ case-indicator {
 //  `------------------------'
 
 listview {
-    background-color:               #00000000;
+    background-color:               @BG;
     columns:                        3;
-    lines:							8;
+    lines:							7;
     spacing:                        5px;
+    padding:                        20px;
+    border-radius:                  12px;
     cycle:                          true;
     dynamic:                        true;
     scrollbar:                      true;

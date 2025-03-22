@@ -94,6 +94,8 @@ bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
 bspc rule -a burp-StartBurp: state=floating
+bspc rule -a "resolve" state=floating
+
 
 
 #  .-------------------------.
@@ -151,6 +153,8 @@ fi
 ## Lanzar Eww
 Eww daemon &
 
+## Fix para el systray
+Eww open --toggle systray
 
 ## Lanzar dunst para las notificaciones
 dunst -config "$BSPDIR"/config/notificaciones &
@@ -178,10 +182,10 @@ Autostart &
 #  `-------------------------'
 
 # Contador de Actualizaciones
-if pgrep -x "Updates-Counter" > /dev/null; then
-    killall "Updates-Counter"
+if pgrep -x "Updates" > /dev/null; then
+    killall "Updates"
 fi
-Updates-Counter &
+Updates &
 
 # Obtener el Clima
 if pgrep -x "Weather-Updater" > /dev/null; then

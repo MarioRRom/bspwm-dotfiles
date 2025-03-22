@@ -19,11 +19,14 @@
 ;;  `------------------------'
 
 ;; Fecha y Hora
-(defpoll HORA :interval "5s" 'LC_TIME="en_US.UTF-8" date "+%I:%M %p"')
-(defpoll DIA :interval "5s" 'LC_TIME="es_AR.UTF-8" date +\"%A\"')
+(defpoll HORA :interval "10s" 'LC_TIME="en_US.UTF-8" date "+%I:%M %p"')
+(defpoll DIA :interval "10s" 'LC_TIME="es_AR.UTF-8" date +\"%A\"') ;"
+
+;; Tarjeta de Reproduccion  (Now Playing)
+(defpoll NOW-PLAYING :interval "2s" :initial "" "centerpanel/now-playing.sh")
 
 ;; Obtener Notificaciones
-(defpoll LISTA-NOTIFICACIONES :interval "1s" "centerpanel/notifications.sh")
+(defpoll LISTA-NOTIFICACIONES :interval "2s" "centerpanel/notifications.sh")
 
 ;; Obtener el Clima
 (defpoll WHICON :interval "30s" 'cat ~/.cache/mariorrom-dotfiles/weather/icono')
@@ -33,7 +36,7 @@
 (defpoll WHVIEN :interval "30s" 'cat ~/.cache/mariorrom-dotfiles/weather/viento')
 (defpoll WHHUM :interval "30s" 'cat ~/.cache/mariorrom-dotfiles/weather/humedad')
 (defpoll WHCOLOR :interval "30s" :initial "white" 'cat ~/.cache/mariorrom-dotfiles/weather/color')
-(defpoll WHBG :interval "30s" :initial "black" 'cat ~/.cache/mariorrom-dotfiles/weather/bg')
+(defpoll WHBG :interval "30s" :initial "" 'cat ~/.cache/mariorrom-dotfiles/weather/bg')
 
 
 
@@ -55,30 +58,57 @@
         ;;  `------------------------'
         (box
             :orientation "v"
+            :spacing 10
             :space-evenly false
-            :spacing 4
 
-            ;; Box que contiene las notificaciones
+            ;; Box de notificaciones
             (box
                 :class "box-notificaciones"
                 :orientation "v"
-                (overlay
-                    ;; literal que carga el script notifications.sh
-                    (literal :content LISTA-NOTIFICACIONES :halign "center" :valign "center")
+                :space-evenly false
+                :spacing 10
 
-                    ;; boton para eliminar notificaciones
+                ;; Tarjeta de Reproduccion
+                (literal :content NOW-PLAYING)
+
+                ;; Lista de notificaciones
+                (scroll
+                    :height {NOW-PLAYING == "" ? 416 : 316}
+                    (literal :content LISTA-NOTIFICACIONES)
+                )
+            )
+
+            ;; Parte inferior de las notificaciones
+            (box
+                :orientation "h"
+
+                ;;Switch de no molestar.
+                (box
+                    :space-evenly false
+                    :style "margin: 8px 0px 8px 0px"
                     (eventbox
-                        :class "limpiar-boton"
-                        :valign "end"
-                        :halign "end"
+                        :width 35
+                        :class { NOMOLESTAR == "false" ? "notificaciones-switch" : "notificaciones-switch-on" }
                         :cursor "pointer"
-                        :tooltip "Limpiar Notificaciones"
-                        :onclick "dunstctl history-clear"
-                        (label :class "texto" :text "Limpiar")
+                        :onclick "dunstctl set-paused toggle && Eww update NOMOLESTAR=$(dunstctl is-paused)"
+                        (box :class "switch-slider")
                     )
+                    (label :class "notificaciones-switch-texto" :text "No Molestar" :valign "end")
+                )
+
+                ;; Boton de elimiar.
+                (eventbox
+                    :class "notificaciones-boton"
+                    :halign "end"
+                    :valign "end"
+                    :cursor "pointer"
+                    :tooltip "Limpiar Notificaciones"
+                    :onclick "dunstctl history-clear"
+                    (label :class "texto" :text "Limpiar")
                 )
             )
         )
+
 
         ;;  .------------------------.
         ;;  | .--------------------. |
@@ -107,25 +137,33 @@
             ;; Clima
             (box
                 :class "climabox"
-                :style "background: ${WHBG}"
+                :style "background-image: url(\"centerpanel/weather/${WHBG}\")"
                 :orientation "h"
+                :width 320
+                :height 139
 
                 ;; Bloque Izquierdo
                 (box
                     :orientation "v"
                     :halign "start"
-                    :valign "center"
+                    :valign "start"
                     :style "background: transparent"
                     :space-evenly false
-                    (label :class "climatemp" :text WHTEMP :halign "start")
-                    (label :class "climadesc" :text WHDESC :halign "start")
-                    (label :class "climasep" :text "────────────"  :halign "start")
                     (label :class "climaubi" :text " ${WHUBI}" :halign "start")
+                    (label :class "climatemp" :text WHTEMP :halign "start")
                     (label :class "climavien" :text "  ${WHVIEN}" :halign "start")
                     (label :class "climahum" :text "󰖌 ${WHHUM}" :halign "start")
                 )
 
-                (label :class "climaicon" :text WHICON :halign "center" :style "color: ${WHCOLOR}")
+                ;; Bloque Derecho
+                (box
+                    :orientation "v"
+                    :halign "end"
+                    :valign "end"
+                    :style "background: transparent"
+                    :space-evenly false
+                    (label :class "climadesc" :text WHDESC :halign "start")
+                )
             )
         )
     )
@@ -142,16 +180,87 @@
     (box
         :class "notificacion-card"
         :space-evenly false
-        :orientation "h"
-        (box :class "icono" :style "background-image: url(\"${imagen}\");")
+        :orientation "v"
+        :height 77
+
+        ;;Barra Superior
         (box
+            :orientation "h"
+            :space-evenly false
+            :class "barra-superior"
+            (label :class "app" :text app :halign "start")
+        )
+
+        ;; Detalles de la notificacion.
+        (box
+            :space-evenly false
+            (box :class "icono" :style "background-image: url(\"${imagen}\");")
+            (box
+                :orientation "v"
+                :space-evenly false
+                :spacing 3
+                :style "margin-right: 5px"
+                (label :class "titulo" :text titulo :halign "start")
+                (label :class "contenido" :text contenido :halign "start")
+
+            )
+        )
+    )
+)
+
+
+;;  .------------------------.
+;;  | .--------------------. |
+;;  | |    Reproductor     | |
+;;  | `--------------------' |
+;;  `------------------------'
+
+(defwidget now-playing-card [?artista ?titulo ?imagen ?status ?bgcolor]
+    (box
+        :class "now-playing-card"
+        :style "background: linear-gradient(135deg, ${bgcolor}, #6c7086); box-shadow: 0px 0px 5px ${bgcolor};"
+        :space-evenly false
+        :orientation "h"
+        :height 98
+
+        ;; Imagen del album
+        (box :class "imagen" :style "background-image: url(\"${imagen}\");")
+
+        ;; Detalles de la cancion
+        (box
+            :class "contenido"
             :orientation "v"
             :space-evenly false
-            :spacing 3
-            (label :class "app" :text app :halign "start")
-            (label :class "titulo" :text titulo :halign "start")
-            (label :class "contenido" :text contenido :halign "start")
-
+            :spacing 0
+            :valign "center"
+            (label :text titulo :class "titulo")
+            (label :text artista :class "artista")
+        
+            ;; Botones de control
+            (box
+                :orientation "h"
+                :space-evenly false
+                :halign "start"
+                :spacing 10
+                (eventbox
+                    :class "boton"
+                    :cursor "pointer"
+                    :onclick "playerctl previous"
+                    (label :class "icono" :text "󰙣")
+                )
+                (eventbox
+                    :class "boton"
+                    :cursor "pointer"
+                    :onclick "playerctl play-pause"
+                    (label :class "icono" :text status)
+                )
+                (eventbox
+                    :class "boton"
+                    :cursor "pointer"
+                    :onclick "playerctl next"
+                    (label :class "icono" :text "󰙡")
+                )
+            )
         )
     )
 )
